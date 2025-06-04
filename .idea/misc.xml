@@ -9,10 +9,17 @@
         <option value="$PROJECT_DIR$/iam-service/pom.xml" />
         <option value="$PROJECT_DIR$/legal-case-service/pom.xml" />
         <option value="$PROJECT_DIR$/profiles-service/pom.xml" />
+        <option value="$PROJECT_DIR$/api-gateaway/pom.xml" />
+        <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/api-gateaway/pom.xml" />
+      </set>
+    </option>
   </component>
-  <component name="ProjectRootManager">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21_PREVIEW" project-jdk-name="graalvm-jdk-21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
