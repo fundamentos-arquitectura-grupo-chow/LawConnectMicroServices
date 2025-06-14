@@ -1,3 +1,4 @@
+/*
 package org.lorem.iamservice.application.internal.commandservices;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -15,13 +16,15 @@ import org.lorem.iamservice.infrastructure.persistence.jpa.repositories.UserRepo
 
 import java.util.Optional;
 
+*/
 /**
  * User command service implementation
  * <p>
  *     This class implements the {@link UserCommandService} interface and provides the implementation for the
  *     {@link SignInCommand} and {@link SignUpCommand} commands.
  * </p>
- */
+ *//*
+
 @Service
 public class UserCommandServiceImpl implements UserCommandService {
 
@@ -46,7 +49,8 @@ public class UserCommandServiceImpl implements UserCommandService {
         this.roleRepository = roleRepository;
     }
 
-    /**
+    */
+/**
      * Handle the sign-in command
      * <p>
      *     This method handles the {@link SignInCommand} command and returns the user and the token.
@@ -54,7 +58,8 @@ public class UserCommandServiceImpl implements UserCommandService {
      * @param command the sign-in command containing the username and password
      * @return and optional containing the user matching the username and the generated token
      * @throws RuntimeException if the user is not found or the password is invalid
-     */
+     *//*
+
     @Override
     public Optional<ImmutablePair<User, String>> handle(SignInCommand command) {
         var user = userRepository.findByUsername(command.username());
@@ -69,14 +74,16 @@ public class UserCommandServiceImpl implements UserCommandService {
         return Optional.of(ImmutablePair.of(user.get(), token));
     }
 
-    /**
+    */
+/**
      * Handle the sign-up command
      * <p>
      *     This method handles the {@link SignUpCommand} command and returns the user.
      * </p>
      * @param command the sign-up command containing the username and password
      * @return the created user
-     */
+     *//*
+
     @Override
     public Optional<User> handle(SignUpCommand command) {
         if (userRepository.existsByUsername(command.email()))
@@ -123,3 +130,4 @@ public class UserCommandServiceImpl implements UserCommandService {
         return userRepository.findByUsername(command.email());
     }
 }
+*/
