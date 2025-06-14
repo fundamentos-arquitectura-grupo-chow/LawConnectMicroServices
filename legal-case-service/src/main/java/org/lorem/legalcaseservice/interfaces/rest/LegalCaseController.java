@@ -1,0 +1,124 @@
+package org.lorem.legalcaseservice.interfaces.rest;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalConsultationLegalCaseService;
+import org.lorem.legalcaseservice.domain.model.commands.CloseLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.model.queries.GetAllLegalCasesQuery;
+import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByConsultationIdQuery;
+import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByIdQuery;
+import org.lorem.legalcaseservice.domain.services.LegalCaseCommandService;
+import org.lorem.legalcaseservice.domain.services.LegalCaseQueryService;
+import org.lorem.legalcaseservice.interfaces.rest.resources.CreateLegalCaseResource;
+import org.lorem.legalcaseservice.interfaces.rest.resources.LegalCaseResource;
+import org.lorem.legalcaseservice.interfaces.rest.transform.CreateLegalCaseCommandFromResourceAssembler;
+import org.lorem.legalcaseservice.interfaces.rest.transform.LegalCaseResourceFromEntityAssembler;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/api/v1/legal_cases", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Legal Cases", description = "Legal Cases Endpoints")
+public class LegalCaseController {
+
+    private final LegalCaseCommandService legalCaseCommandService;
+    private final LegalCaseQueryService legalCaseQueryService;
+    private final ExternalConsultationLegalCaseService externalConsultationLegalCaseService;
+
+    public LegalCaseController(LegalCaseCommandService legalCaseCommandService,
+                               LegalCaseQueryService legalCaseQueryService,
+                               ExternalConsultationLegalCaseService externalConsultationLegalCaseService) {
+        this.legalCaseCommandService = legalCaseCommandService;
+        this.legalCaseQueryService = legalCaseQueryService;
+        this.externalConsultationLegalCaseService = externalConsultationLegalCaseService;
+    }
+
+    @PostMapping
+    public ResponseEntity<LegalCaseResource> createLegalCase(@RequestBody CreateLegalCaseResource resource){
+        var createLegalCaseCommand = CreateLegalCaseCommandFromResourceAssembler.toCommandFromResource(resource);
+        var legalCase = legalCaseCommandService.handle(createLegalCaseCommand);
+
+        if(legalCase.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        var consultationResource = externalConsultationLegalCaseService
+                .getConsultationResourceById(legalCase.get().getConsultationId());
+
+        if(consultationResource.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        var legalCaseResource = LegalCaseResourceFromEntityAssembler.toResourceFromEntity(legalCase.get());
+
+        return new ResponseEntity<>(legalCaseResource, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{legalCaseId}")
+    public ResponseEntity<LegalCaseResource> getLegalCaseById(@PathVariable Long legalCaseId){
+        var getLegalCaseByIdQuery = new GetLegalCaseByIdQuery(legalCaseId);
+        var legalCase = legalCaseQueryService.handle(getLegalCaseByIdQuery);
+
+        if(legalCase.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        var consultationResource = externalConsultationLegalCaseService
+                .getConsultationResourceById(legalCase.get().getConsultationId());
+
+        if(consultationResource.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        var legalCaseResource = LegalCaseResourceFromEntityAssembler.toResourceFromEntity(legalCase.get());
+        return ResponseEntity.ok(legalCaseResource);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<LegalCaseResource>> getAllLegalCases(){
+        var legalAllCasesQuery = legalCaseQueryService.handle(new GetAllLegalCasesQuery());
+        var legalCaseResources = legalAllCasesQuery
+                .stream()
+                .map(legalCase -> {
+                    var consultationResource = externalConsultationLegalCaseService
+                            .getConsultationResourceById(legalCase.getConsultationId());
+                    if (consultationResource.isEmpty()) {
+                        return null;
+                    }
+                    return LegalCaseResourceFromEntityAssembler.toResourceFromEntity(legalCase);
+                })
+                .filter(resource -> resource != null)
+                .toList();
+        return ResponseEntity.ok(legalCaseResources);
+    }
+
+    @PatchMapping("/close/{legalCaseId}")
+    public ResponseEntity<?> closeLegalCase(@PathVariable Long legalCaseId){
+        legalCaseCommandService.handle(new CloseLegalCaseCommand(legalCaseId));
+        return ResponseEntity.ok("Legal Case Closed Successfully");
+    }
+
+    @GetMapping("/consultation/{consultationId}")
+    public ResponseEntity<LegalCaseResource> getLegalCaseByConsultationId(@PathVariable Long consultationId){
+        var getLegalCaseByConsultationIdQuery = new GetLegalCaseByConsultationIdQuery(consultationId);
+        var legalCase = legalCaseQueryService.handle(getLegalCaseByConsultationIdQuery);
+
+        if(legalCase.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        var consultationResource = externalConsultationLegalCaseService
+                .getConsultationResourceById(consultationId);
+
+        if(consultationResource.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        var legalCaseResource = LegalCaseResourceFromEntityAssembler.toResourceFromEntity(legalCase.get());
+
+        return ResponseEntity.ok(legalCaseResource);
+    }
+}
