@@ -1,4 +1,4 @@
-package org.lorem.iamservice.application.internal.outboundservices;
+/*package org.lorem.iamservice.application.internal.outboundservices;
 
 import org.springframework.stereotype.Service;
 import upc.LoremIpsum.lawconnectplatform.profiles.interfaces.acl.ProfileContextFacade;
@@ -51,5 +51,5 @@ public class ExternalProfileIAMService {
                 image_url
         );
     }
-}
+}*/
 

@@ -1,3 +1,4 @@
+/*
 package org.lorem.legalcaseservice.interfaces.acl;
 
 import org.springframework.context.annotation.Lazy;
@@ -79,3 +80,4 @@ public class LegalCaseContextFacade {
         legalCaseCommandService.handle(new DeleteLegalCaseCommand(legalCaseId));
     }
 }
+*/

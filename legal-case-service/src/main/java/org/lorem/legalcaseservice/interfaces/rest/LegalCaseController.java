@@ -1,3 +1,4 @@
+/*
 package org.lorem.legalcaseservice.interfaces.rest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -122,3 +123,4 @@ public class LegalCaseController {
         return ResponseEntity.ok(legalCaseResource);
     }
 }
+*/

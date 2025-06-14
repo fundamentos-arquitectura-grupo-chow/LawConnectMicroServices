@@ -1,3 +1,4 @@
+/*
 package org.lorem.legalcaseservice.application.internal.commandservices;
 
 import org.springframework.stereotype.Service;
@@ -88,3 +89,4 @@ public class DocumentsCommandServiceImpl implements DocumentsCommandService {
         documentsRepository.save(document.get());
     }
 }
+*/

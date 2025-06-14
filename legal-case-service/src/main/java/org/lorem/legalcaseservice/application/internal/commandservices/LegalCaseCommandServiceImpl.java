@@ -1,3 +1,4 @@
+/*
 package org.lorem.legalcaseservice.application.internal.commandservices;
 
 import org.springframework.stereotype.Service;
@@ -50,4 +51,4 @@ public class LegalCaseCommandServiceImpl implements LegalCaseCommandService {
         var legalCase = legalCaseRepository.findById(command.legalCaseId());
         legalCase.ifPresent(legalCaseRepository::delete);
     }
-}
+}*/
