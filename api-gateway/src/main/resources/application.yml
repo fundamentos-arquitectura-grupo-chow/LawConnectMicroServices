@@ -10,4 +10,11 @@ spring:
                 - id: iam-service-route
                   uri: http://iam-service:8001
                   predicates:
-                      - Path=/api/v1/**
+                      - Path=/api/v1/authentication/**,/api/v1/roles/**
+
+                - id: follow-up-service-route
+                  uri: http://follow-up-service:8002
+                  predicates:
+                      - Path=/api/v1/**,/api/v1/follow-up/**
+                  filters:
+                    - JwtValidation
