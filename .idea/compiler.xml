@@ -14,12 +14,26 @@
         <module name="follow-up-service" />
         <module name="profiles-service" />
       </profile>
+      <profile name="Annotation profile for feedinng-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+        </processorPath>
+        <module name="feedinng-service" />
+      </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="feeding-service" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
       <module name="consultation-service" options="-parameters" />
+      <module name="feeding-service" options="-parameters" />
+      <module name="feedinng-service" options="-parameters" />
       <module name="follow-up-service" options="-parameters" />
       <module name="iam-service" options="-parameters" />
       <module name="legal-case-service" options="-parameters" />
