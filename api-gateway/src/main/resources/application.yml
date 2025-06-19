@@ -1,30 +1,30 @@
 server:
-    port: 8000
+  port: 8000
 
 spring:
-    cloud:
-        gateway:
-            routes:
-                ## http://localhost:4004/auth/login
-                ## API-GATEWAY -> http://auth-service:4005/login
-                - id: iam-service-route
-                  uri: http://iam-service:8001
-                  predicates:
-                      - Path=/api/v1/authentication/**,/api/v1/roles/**,/api/v1/users/**
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: iam-service-route
+              uri: http://iam-service:8001
+              predicates:
+                - Path=/api/v1/authentication/**,/api/v1/roles/**
 
-                - id: follow-up-service-route
-                  uri: http://follow-up-service:8002
-                  predicates:
-                      - Path=/api/v1/notification/**,/api/v1/follow-up/**
-                  filters:
-                    - JwtValidation
+            - id: feeing-service-route
+              uri: http://feeing-service:8004
+              predicates:
+                  - Path=/api/v1/payments/**
 
-                - id: consultation-service-route
-                  uri: http://consultation-service:8003
-                  predicates:
-                    - Path=/api/v1/consultations/**
-                  filters:
-                    - JwtValidation
+            - id: follow-up-service-route
+              uri: http://follow-up-service:8002
+              predicates:
+                - Path=/api/v1/**,/api/v1/notification/**
+              filters:
+                - JwtValidation
+
+
 iam:
   service:
     url: http://iam-service:8001
