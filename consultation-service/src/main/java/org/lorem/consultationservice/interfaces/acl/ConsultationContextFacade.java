@@ -11,7 +11,7 @@ import org.lorem.consultationservice.domain.services.ConsultationCommandService;
 import org.lorem.consultationservice.domain.services.ConsultationQueryService;
 import org.lorem.consultationservice.interfaces.rest.resources.ConsultationResource;
 import org.lorem.consultationservice.interfaces.rest.transform.ConsultationResourceFromEntityAssembler;
-//import upc.LoremIpsum.lawconnectplatform.feeing.domain.model.aggregates.Payment;
+//import org.lorem.profilesservice.feeing.domain.model.aggregates.Payment;
 
 import java.util.List;
 import java.util.Optional;

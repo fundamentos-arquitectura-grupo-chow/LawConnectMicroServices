@@ -2,7 +2,7 @@
 package org.lorem.iamservice.application.internal.outboundservices;
 
 import org.springframework.stereotype.Service;
-import upc.LoremIpsum.lawconnectplatform.profiles.interfaces.acl.ProfileContextFacade;
+import org.lorem.profilesservice.interfaces.acl.ProfileContextFacade;
 
 @Service
 public class ExternalProfileIAMService {

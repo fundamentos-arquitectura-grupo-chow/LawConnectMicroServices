@@ -8,9 +8,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="iam-service" />
+        <module name="legal-case-service" />
+        <module name="communication-service" />
+        <module name="feeing-service" />
         <module name="api-gateway" />
         <module name="consultation-service" />
-        <module name="legal-case-service" />
         <module name="follow-up-service" />
         <module name="profiles-service" />
       </profile>
@@ -19,7 +21,9 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
+      <module name="communication-service" options="-parameters" />
       <module name="consultation-service" options="-parameters" />
+      <module name="feeing-service" options="-parameters" />
       <module name="follow-up-service" options="-parameters" />
       <module name="iam-service" options="-parameters" />
       <module name="legal-case-service" options="-parameters" />

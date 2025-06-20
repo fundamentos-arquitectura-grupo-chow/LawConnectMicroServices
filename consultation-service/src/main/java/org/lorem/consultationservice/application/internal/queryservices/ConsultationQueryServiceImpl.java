@@ -6,7 +6,7 @@ import org.lorem.consultationservice.domain.model.aggregates.Consultation;
 import org.lorem.consultationservice.domain.model.queries.*;
 import org.lorem.consultationservice.domain.services.ConsultationQueryService;
 import org.lorem.consultationservice.infrastructure.persistence.jpa.repositories.ConsultationRepository;
-//import upc.LoremIpsum.lawconnectplatform.feeing.domain.model.aggregates.Payment;
+//import org.lorem.profilesservice.feeing.domain.model.aggregates.Payment;
 
 import java.util.List;
 import java.util.Optional;

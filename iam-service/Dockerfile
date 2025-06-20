@@ -1,3 +1,4 @@
+# Etapa de construcción
 FROM maven:3.9.9-eclipse-temurin-21 AS builder
 
 WORKDIR /app
@@ -10,6 +11,7 @@ COPY src ./src
 
 RUN mvn clean package
 
+# Etapa de ejecución
 FROM openjdk:21-jdk AS runner
 
 WORKDIR /app
@@ -22,4 +24,5 @@ ENV AUTHORIZATION_JWT_EXPIRATION_DAYS=7
 
 EXPOSE 8001
 
+# Iniciar PostgreSQL y la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]

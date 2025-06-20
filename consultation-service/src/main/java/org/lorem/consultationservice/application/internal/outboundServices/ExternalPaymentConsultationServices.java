@@ -2,9 +2,9 @@
 package org.lorem.consultationservice.application.internal.outboundServices;
 
 import org.springframework.stereotype.Service;
-import upc.LoremIpsum.lawconnectplatform.feeing.domain.model.aggregates.Payment;
-import upc.LoremIpsum.lawconnectplatform.feeing.interfaces.acl.PaymentContextFacade;
-import upc.LoremIpsum.lawconnectplatform.feeing.interfaces.rest.resources.PaymentResource;
+import org.lorem.profilesservice.feeing.domain.model.aggregates.Payment;
+import org.lorem.profilesservice.feeing.interfaces.acl.PaymentContextFacade;
+import org.lorem.profilesservice.feeing.interfaces.rest.resources.PaymentResource;
 
 import java.util.List;
 import java.util.Optional;

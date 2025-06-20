@@ -1,0 +1,62 @@
+package org.lorem.profilesservice.interfaces.rest;
+
+import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.lorem.profilesservice.domain.model.queries.GetAllProfilesQuery;
+import org.lorem.profilesservice.domain.model.queries.GetProfileByIdQuery;
+import org.lorem.profilesservice.domain.services.ProfileCommandService;
+import org.lorem.profilesservice.domain.services.ProfileQueryService;
+import org.lorem.profilesservice.interfaces.rest.resources.CreateProfileResource;
+import org.lorem.profilesservice.interfaces.rest.resources.ProfileResource;
+import org.lorem.profilesservice.interfaces.rest.transform.CreateProfileCommandFromResourceAssembler;
+import org.lorem.profilesservice.interfaces.rest.transform.ProfileResourceFromEntityAssembler;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping(value = "/api/v1/profiles", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Profile", description = "Profile Endpoints")
+public class ProfileController {
+
+    private final ProfileCommandService profileCommandService;
+    private final ProfileQueryService profileQueryService;
+
+    public ProfileController(ProfileCommandService profileCommandService, ProfileQueryService profileQueryService) {
+        this.profileCommandService = profileCommandService;
+        this.profileQueryService = profileQueryService;
+    }
+
+    @PostMapping
+    public ResponseEntity<ProfileResource> createProfile(@RequestBody CreateProfileResource resource) {
+        var createProfileCommand = CreateProfileCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var profile = profileCommandService.handle(createProfileCommand);
+        if (profile.isEmpty()) return ResponseEntity.badRequest().build();
+        var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(profile.get());
+        return new ResponseEntity<>(profileResource, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{profileId}")
+    public ResponseEntity<ProfileResource> getProfileById(@PathVariable Long profileId) {
+        var getProfileByIdQuery = new GetProfileByIdQuery(profileId);
+        var profile = profileQueryService.handle(getProfileByIdQuery);
+        if (profile.isEmpty()) return ResponseEntity.notFound().build();
+        var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(profile.get());
+        return ResponseEntity.ok(profileResource);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProfileResource>> getAllProfiles() {
+        var getAllProfilesQuery = new GetAllProfilesQuery();
+        var profiles = profileQueryService.handle(getAllProfilesQuery);
+        var profileResources = profiles.stream()
+                .map(ProfileResourceFromEntityAssembler::ToResourceFromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(profileResources);
+    }
+
+
+}

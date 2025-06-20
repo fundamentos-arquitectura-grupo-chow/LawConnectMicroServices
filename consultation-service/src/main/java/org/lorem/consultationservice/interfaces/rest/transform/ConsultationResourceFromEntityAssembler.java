@@ -2,7 +2,7 @@ package org.lorem.consultationservice.interfaces.rest.transform;
 
 import org.lorem.consultationservice.domain.model.aggregates.Consultation;
 import org.lorem.consultationservice.interfaces.rest.resources.ConsultationResource;
-//import upc.LoremIpsum.lawconnectplatform.feeing.interfaces.rest.resources.PaymentResource;
+//import org.lorem.profilesservice.feeing.interfaces.rest.resources.PaymentResource;
 
 import java.util.List;
 

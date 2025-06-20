@@ -2,7 +2,7 @@
 package org.lorem.consultationservice.application.internal.outboundServices;
 
 import org.springframework.stereotype.Service;
-import upc.LoremIpsum.lawconnectplatform.communication.interfaces.acl.CommunicationContextFacade;
+import org.lorem.profilesservice.communication.interfaces.acl.CommunicationContextFacade;
 
 @Service
 public class ExternalCommunicationConsultationService {

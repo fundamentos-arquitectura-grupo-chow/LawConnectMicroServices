@@ -1,0 +1,150 @@
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - iam-service
+      - follow-up-service
+      - consultation-service
+      - profiles-service
+
+  iam-service:
+    build:
+      context: ../iam-service
+      dockerfile: Dockerfile
+    environment:
+      AUTHORIZATION_JWT_SECRET: clave_secreta_para_firmar_jwt_tokens
+      AUTHORIZATION_JWT_EXPIRATION_DAYS: 7
+      SPRING_DATASOURCE_URL: jdbc:postgresql://iam-service-db:5432/iam_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_APPLICATION_JSON: '{
+        "spring.main.allow-circular-references": true,
+        "spring.jpa.show-sql": true,
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "spring.jpa.open-in-view": true,
+        "spring.servlet.multipart.enabled": true
+      }'
+    ports:
+      - "8001:8001"
+    depends_on:
+      - iam-service-db
+
+  iam-service-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: iam_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  follow-up-service:
+    build:
+      context: ../follow-up-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://follow-up-service-db:5432/follow_up_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_APPLICATION_JSON: '{
+        "spring.main.allow-circular-references": true,
+        "spring.jpa.show-sql": true,
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "spring.jpa.open-in-view": true,
+        "spring.servlet.multipart.enabled": true
+      }'
+    ports:
+      - "8002:8002"
+    depends_on:
+      - follow-up-service-db
+
+  follow-up-service-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: follow_up_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  consultation-service:
+    build:
+      context: ../consultation-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://consultation-service-db:5432/consultation_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_APPLICATION_JSON: '{
+        "spring.main.allow-circular-references": true,
+        "spring.jpa.show-sql": true,
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "spring.jpa.open-in-view": true,
+        "spring.servlet.multipart.enabled": true
+      }'
+    ports:
+      - "8003:8003"
+    depends_on:
+      - consultation-service-db
+
+  consultation-service-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: consultation_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  profiles-service:
+    build:
+      context: ../profiles-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://profiles-service-db:5432/profiles_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_APPLICATION_JSON: '{
+        "spring.main.allow-circular-references": true,
+        "spring.jpa.show-sql": true,
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "spring.jpa.open-in-view": true,
+        "spring.servlet.multipart.enabled": true
+      }'
+    ports:
+      - "8004:8004"
+    depends_on:
+      - profiles-service-db
+
+  profiles-service-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: profiles_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

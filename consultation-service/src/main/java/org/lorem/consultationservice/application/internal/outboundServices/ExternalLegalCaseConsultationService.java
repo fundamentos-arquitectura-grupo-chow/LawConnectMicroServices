@@ -2,8 +2,8 @@
 package org.lorem.consultationservice.application.internal.outboundServices;
 
 import org.springframework.stereotype.Service;
-import upc.LoremIpsum.lawconnectplatform.legalcase.interfaces.acl.LegalCaseContextFacade;
-import upc.LoremIpsum.lawconnectplatform.legalcase.interfaces.rest.resources.LegalCaseResource;
+import org.lorem.profilesservice.legalcase.interfaces.acl.LegalCaseContextFacade;
+import org.lorem.profilesservice.legalcase.interfaces.rest.resources.LegalCaseResource;
 
 import java.util.Optional;
 

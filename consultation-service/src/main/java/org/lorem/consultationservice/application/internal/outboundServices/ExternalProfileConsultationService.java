@@ -2,9 +2,9 @@
 package org.lorem.consultationservice.application.internal.outboundServices;
 
 import org.springframework.stereotype.Service;
-import upc.LoremIpsum.lawconnectplatform.profiles.domain.model.aggregates.Client;
-import upc.LoremIpsum.lawconnectplatform.profiles.domain.model.aggregates.Lawyer;
-import upc.LoremIpsum.lawconnectplatform.profiles.interfaces.acl.ProfileContextFacade;
+import org.lorem.profilesservice.domain.model.aggregates.Client;
+import org.lorem.profilesservice.domain.model.aggregates.Lawyer;
+import org.lorem.profilesservice.interfaces.acl.ProfileContextFacade;
 
 import java.util.Optional;
 

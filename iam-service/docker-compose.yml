@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      AUTHORIZATION_JWT_SECRET: clave_secreta_para_firmar_jwt_tokens
+      AUTHORIZATION_JWT_EXPIRATION_DAYS: 7
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/iam_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: iam_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
