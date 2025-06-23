@@ -1,5 +1,6 @@
 package org.lorem.profilesservice.application.internal.commandservices;
 
+import org.lorem.profilesservice.infrastructure.grpc.IAMGrpcClient;
 import org.springframework.stereotype.Service;
 //import org.lorem.profilesservice.application.internal.outboundServices.ExternalIAMProfileService;
 import org.lorem.profilesservice.domain.model.aggregates.Lawyer;
@@ -19,28 +20,25 @@ public class LawyerCommandServiceImpl implements LawyerCommandService {
 
     private final LawyerRepository lawyerRepository;
     private final ProfileRepository profileRepository;
-    //private final ExternalIAMProfileService externalIAMProfileService;
-
+    private final IAMGrpcClient iamGrpcClient;
 
     public LawyerCommandServiceImpl(
             LawyerRepository lawyerRepository,
-            ProfileRepository profileRepository
-            //ExternalIAMProfileService externalIAMProfileService
+            ProfileRepository profileRepository, IAMGrpcClient iamGrpcClient
     ) {
         this.lawyerRepository = lawyerRepository;
         this.profileRepository = profileRepository;
-        //this.externalIAMProfileService = externalIAMProfileService;
+        this.iamGrpcClient = iamGrpcClient;
     }
 
     @Override
     public Optional<Lawyer> handle(CreateLawyerCommand command) {
-
         var profileId = profileRepository.findByEmail(new EmailAddress(command.email()));
         var profile = new Profile();
 
         if (profileId.isEmpty()) {
-            //var userId = externalIAMProfileService.getUserIdByUsername(command.email());
-            //profile = new Profile(command, userId);
+            var userId = iamGrpcClient.getUserIdByUsername(command.email());
+            profile = new Profile(command, userId);
         } else {
             throw new IllegalArgumentException("Lawyer already exists");
         }

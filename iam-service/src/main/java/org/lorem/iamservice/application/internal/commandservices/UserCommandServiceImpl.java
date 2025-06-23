@@ -1,6 +1,8 @@
 package org.lorem.iamservice.application.internal.commandservices;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.lorem.iamservice.domain.model.valueobjects.Roles;
+import org.lorem.iamservice.infrastructure.grpc.ProfileGrpcClient;
 import org.springframework.stereotype.Service;
 //import org.lorem.iamservice.application.internal.outboundservices.ExternalProfileIAMService;
 import org.lorem.iamservice.application.internal.outboundservices.hashing.HashingService;
@@ -12,6 +14,8 @@ import org.lorem.iamservice.domain.model.commands.SignUpCommand;
 import org.lorem.iamservice.domain.services.UserCommandService;
 import org.lorem.iamservice.infrastructure.persistence.jpa.repositories.UserRepository;
 import org.lorem.iamservice.infrastructure.persistence.jpa.repositories.RoleRepository;
+import profile.ClientRequest;
+import profile.LawyerRequest;
 
 import java.util.Optional;
 
@@ -28,21 +32,20 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final UserRepository userRepository;
     private final HashingService hashingService;
     private final TokenService tokenService;
-    //private final ExternalProfileIAMService externalIAMProfileService;
-
+    private final ProfileGrpcClient profileGrpcClient;
     private final RoleRepository roleRepository;
 
     public UserCommandServiceImpl(
             UserRepository userRepository,
             HashingService hashingService,
             TokenService tokenService,
-            //ExternalProfileIAMService externalIAMProfileService,
+            ProfileGrpcClient profileGrpcClient,
             RoleRepository roleRepository
     ) {
         this.userRepository = userRepository;
         this.hashingService = hashingService;
         this.tokenService = tokenService;
-        //this.externalIAMProfileService = externalIAMProfileService;
+        this.profileGrpcClient = profileGrpcClient;
         this.roleRepository = roleRepository;
     }
 
@@ -93,31 +96,36 @@ public class UserCommandServiceImpl implements UserCommandService {
                 roles
         );
 
-        /*if (roles.stream().anyMatch(role -> role.getName() == Roles.LAWYER)) {
-            System.out.println("Creating lawyer");
-            externalIAMProfileService.createLawyer(
-                    command.firstName(),
-                    command.lastName(),
-                    command.email(),
-                    command.phoneNumber(),
-                    command.address(),
-                    command.dni(),
-                    command.image_url()
-            );
-        } else if (roles.stream().anyMatch(role -> role.getName() == Roles.CLIENT)) {
-            System.out.println("Creating client");
-            externalIAMProfileService.createClient(
-                    command.firstName(),
-                    command.lastName(),
-                    command.email(),
-                    command.phoneNumber(),
-                    command.address(),
-                    command.dni(),
-                    command.image_url()
-            );
-        } else {
-            throw new RuntimeException("Role not found");
-        }*/
+        try {
+            if (roles.stream().anyMatch(role -> role.getName() == Roles.LAWYER)) {
+                System.out.println("Creating lawyer via gRPC");
+                profileGrpcClient.createLawyer(LawyerRequest.newBuilder()
+                        .setFirstName(command.firstName())
+                        .setLastName(command.lastName())
+                        .setEmail(command.email())
+                        .setPhoneNumber(command.phoneNumber())
+                        .setAddress(command.address())
+                        .setDni(command.dni())
+                        .setImageUrl(command.image_url())
+                        .build());
+            } else if (roles.stream().anyMatch(role -> role.getName() == Roles.CLIENT)) {
+                System.out.println("Creating client via gRPC");
+                profileGrpcClient.createClient(ClientRequest.newBuilder()
+                        .setFirstName(command.firstName())
+                        .setLastName(command.lastName())
+                        .setEmail(command.email())
+                        .setPhoneNumber(command.phoneNumber())
+                        .setAddress(command.address())
+                        .setDni(command.dni())
+                        .setImageUrl(command.image_url())
+                        .build());
+            } else {
+                throw new RuntimeException("Role not found");
+            }
+        } catch (io.grpc.StatusRuntimeException e) {
+            System.err.println("gRPC error: " + e.getStatus().getCode() + " - " + e.getStatus().getDescription());
+            throw new RuntimeException("Failed to create user profile via gRPC: " + e.getMessage(), e);
+        }
 
         userRepository.save(user);
         return userRepository.findByUsername(command.email());

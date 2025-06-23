@@ -1,5 +1,6 @@
 package org.lorem.profilesservice.application.internal.commandservices;
 
+import org.lorem.profilesservice.infrastructure.grpc.IAMGrpcClient;
 import org.springframework.stereotype.Service;
 //import org.lorem.profilesservice.application.internal.outboundServices.ExternalIAMProfileService;
 import org.lorem.profilesservice.domain.model.aggregates.Client;
@@ -19,24 +20,23 @@ public class ClientCommandServiceImpl implements ClientCommandService {
 
     private final ProfileRepository profileRepository;
     private final ClientRepository clientRepository;
-    //private final ExternalIAMProfileService externalIAMProfileService;
+    private final IAMGrpcClient iamGrpcClient;
 
-    public ClientCommandServiceImpl(ProfileRepository profileRepository, ClientRepository clientRepository) {
+    public ClientCommandServiceImpl(ProfileRepository profileRepository, ClientRepository clientRepository, IAMGrpcClient iamGrpcClient) {
         this.profileRepository = profileRepository;
         this.clientRepository = clientRepository;
-        //this.externalIAMProfileService = externalIAMProfileService;
+        this.iamGrpcClient = iamGrpcClient;
     }
 
 
     @Override
     public Optional<Client> handle(CreateClientCommand command) {
-
         var profileId = profileRepository.findByEmail(new EmailAddress(command.email()));
         var profile = new Profile();
 
         if (profileId.isEmpty()) {
-           // var userId = externalIAMProfileService.getUserIdByUsername(command.email());
-            //profile = new Profile(command, userId);
+            var userId = iamGrpcClient.getUserIdByUsername(command.email());
+            profile = new Profile(command, userId);
         } else {
             throw new IllegalArgumentException("Client already exists");
         }
