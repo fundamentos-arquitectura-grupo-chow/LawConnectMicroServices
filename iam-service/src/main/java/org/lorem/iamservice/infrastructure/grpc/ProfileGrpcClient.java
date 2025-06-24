@@ -1,8 +1,5 @@
 package org.lorem.iamservice.infrastructure.grpc;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import org.springframework.stereotype.Component;
 import profile.LawyerRequest;
 import profile.ProfileServiceGrpc;
 import profile.ClientRequest;

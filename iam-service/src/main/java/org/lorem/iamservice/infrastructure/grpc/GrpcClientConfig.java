@@ -11,7 +11,7 @@ public class GrpcClientConfig {
 
     @Bean
     public ProfileGrpcClient profileGrpcClient() {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("profiles-service", 6569)
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("profiles-service", 6565)
                 .usePlaintext()
                 .build();
         return new ProfileGrpcClient(ProfileServiceGrpc.newBlockingStub(channel));

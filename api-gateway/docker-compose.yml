@@ -15,6 +15,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - lawconnect-network
 
   iam-service:
     build:
@@ -58,6 +60,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - lawconnect-network
 
   follow-up-service:
     build:
@@ -99,6 +103,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - lawconnect-network
 
   consultation-service:
     build:
@@ -140,6 +146,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - lawconnect-network
 
   profiles-service:
     build:

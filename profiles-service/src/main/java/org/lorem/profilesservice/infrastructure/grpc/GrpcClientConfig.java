@@ -11,7 +11,7 @@ public class GrpcClientConfig {
 
     @Bean
     public IAMGrpcClient iamGrpcClient() {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("iam-service", 6566)
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("iam-service", 6565)
                 .usePlaintext()
                 .build();
         return new IAMGrpcClient(IAMServiceGrpc.newBlockingStub(channel));

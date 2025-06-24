@@ -1,8 +1,5 @@
 package org.lorem.profilesservice.infrastructure.grpc;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import org.springframework.stereotype.Component;
 import iam.IAMServiceGrpc;
 import iam.GetUserIdRequest;
 import iam.GetUserIdResponse;
