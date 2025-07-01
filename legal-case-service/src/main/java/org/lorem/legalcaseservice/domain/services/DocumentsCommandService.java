@@ -1,0 +1,11 @@
+package org.lorem.legalcaseservice.domain.services;
+
+import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.AddDocumentByLegalCaseIdCommand;
+import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.ChangeDocumentStatusCommand;
+import org.springframework.stereotype.Service;
+
+@Service
+public interface DocumentsCommandService {
+    void handle(AddDocumentByLegalCaseIdCommand command);
+    void handle(ChangeDocumentStatusCommand command);
+}
