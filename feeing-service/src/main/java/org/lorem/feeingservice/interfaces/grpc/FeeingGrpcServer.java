@@ -1,4 +1,4 @@
-package org.lorem.feeingservice.infrastructure.grpc;
+package org.lorem.feeingservice.interfaces.grpc;
 
 import feeing.*;
 import feeing.FeeingServiceGrpc;
