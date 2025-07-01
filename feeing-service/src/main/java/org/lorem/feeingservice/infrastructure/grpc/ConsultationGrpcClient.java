@@ -5,10 +5,8 @@ package org.lorem.feeingservice.infrastructure.grpc;
 //import consultation.GetConsultationByPaymentIdRequest;
 //import consultation.ChangeConsultationStatusRequest;
 //import consultation.ConsultationResponse;
-//import org.lorem.feeingservice.domain.model.valueObjects.ConsultationDto;
-// org.springframework.stereotype.Service;
-
 import org.lorem.feeingservice.domain.model.valueObjects.ConsultationDto;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,7 +15,7 @@ import java.util.Optional;
 @Service
 public class ConsultationGrpcClient {
 
- /*   private final ConsultationServiceGrpc.ConsultationServiceBlockingStub stub;
+   private final ConsultationServiceGrpc.ConsultationServiceBlockingStub stub;
 
     public ConsultationGrpcClient(
             ConsultationServiceGrpc.ConsultationServiceBlockingStub stub
@@ -65,5 +63,4 @@ public class ConsultationGrpcClient {
                 response.getClientId()
         );
     }
-    */
 }

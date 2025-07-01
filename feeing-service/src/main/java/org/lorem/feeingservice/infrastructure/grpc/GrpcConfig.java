@@ -17,7 +17,7 @@ public class GrpcConfig {
                 .build();
 
         return new ConsultationGrpcClient(
-                //ConsultationServiceGrpc.newBlockingStub(channel)
+                ConsultationServiceGrpc.newBlockingStub(channel)
         );
     }
 }
