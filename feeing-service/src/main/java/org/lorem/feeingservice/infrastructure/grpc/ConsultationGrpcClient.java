@@ -1,10 +1,10 @@
 package org.lorem.feeingservice.infrastructure.grpc;
 
-//import consultation.ConsultationServiceGrpc;
-//import consultation.GetConsultationByIdRequest;
-//import consultation.GetConsultationByPaymentIdRequest;
-//import consultation.ChangeConsultationStatusRequest;
-//import consultation.ConsultationResponse;
+import consultation.ConsultationServiceGrpc;
+import consultation.GetConsultationByIdRequest;
+import consultation.GetConsultationByPaymentIdRequest;
+import consultation.ChangeConsultationStatusRequest;
+import consultation.ConsultationResponse;
 import org.lorem.feeingservice.domain.model.valueObjects.ConsultationDto;
 
 import org.springframework.stereotype.Service;

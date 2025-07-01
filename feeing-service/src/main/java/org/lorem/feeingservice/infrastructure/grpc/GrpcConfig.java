@@ -1,36 +1,50 @@
 package org.lorem.feeingservice.infrastructure.grpc;
 
 import consultation.ConsultationServiceGrpc;
-import profile.ProfileServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import profile.ProfileServiceGrpc;
 
 @Configuration
 public class GrpcConfig {
 
     @Bean
-    public ConsultationGrpcClient consultationGrpcClient() {
-        ManagedChannel channel = ManagedChannelBuilder
+    public ManagedChannel consultationChannel() {
+        return ManagedChannelBuilder
                 .forAddress("consultation-service", 6565)
                 .usePlaintext()
                 .build();
-
-        return new ConsultationGrpcClient(
-                ConsultationServiceGrpc.newBlockingStub(channel)
-        );
     }
 
     @Bean
-    public ProfileGrpcClient profileGrpcClient() {
-        ManagedChannel channel = ManagedChannelBuilder
+    public ConsultationServiceGrpc.ConsultationServiceBlockingStub consultationServiceBlockingStub(ManagedChannel consultationChannel) {
+        return ConsultationServiceGrpc.newBlockingStub(consultationChannel);
+    }
+
+    @Bean
+    public ConsultationGrpcClient consultationGrpcClient(
+            ConsultationServiceGrpc.ConsultationServiceBlockingStub consultationServiceBlockingStub) {
+        return new ConsultationGrpcClient(consultationServiceBlockingStub);
+    }
+
+    @Bean
+    public ManagedChannel profileChannel() {
+        return ManagedChannelBuilder
                 .forAddress("profiles-service", 6565)
                 .usePlaintext()
                 .build();
+    }
 
-        return new ProfileGrpcClient(
-                ProfileServiceGrpc.newBlockingStub(channel)
-        );
+    @Bean
+    public ProfileServiceGrpc.ProfileServiceBlockingStub profileServiceBlockingStub(ManagedChannel profileChannel) {
+        return ProfileServiceGrpc.newBlockingStub(profileChannel);
+    }
+
+    @Bean
+    public ProfileGrpcClient profileGrpcClient(
+            ProfileServiceGrpc.ProfileServiceBlockingStub profileServiceBlockingStub) {
+        return new ProfileGrpcClient(profileServiceBlockingStub);
     }
 }
