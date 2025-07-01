@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-/*
+
 @Service
 public class ConsultationGrpcClient {
 
-    private final ConsultationServiceGrpc.ConsultationServiceBlockingStub stub;
+ /*   private final ConsultationServiceGrpc.ConsultationServiceBlockingStub stub;
 
     public ConsultationGrpcClient(
             ConsultationServiceGrpc.ConsultationServiceBlockingStub stub
@@ -65,4 +65,5 @@ public class ConsultationGrpcClient {
                 response.getClientId()
         );
     }
-}*/
+    */
+}

@@ -1,6 +1,6 @@
 package org.lorem.feeingservice.infrastructure.grpc;
 
-import consultation.ConsultationServiceGrpc;
+//import consultation.ConsultationServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ public class GrpcConfig {
                 .build();
 
         return new ConsultationGrpcClient(
-                ConsultationServiceGrpc.newBlockingStub(channel)
+                //ConsultationServiceGrpc.newBlockingStub(channel)
         );
     }
 }
