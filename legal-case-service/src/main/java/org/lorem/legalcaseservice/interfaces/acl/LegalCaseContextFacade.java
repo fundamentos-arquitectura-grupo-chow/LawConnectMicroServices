@@ -1,11 +1,11 @@
 package org.lorem.legalcaseservice.interfaces.acl;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.aggregates.LegalCase;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.CreateLegalCaseCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.DeleteLegalCaseCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetLegalCaseByConsultationIdQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.services.LegalCaseCommandService;
-import com.loremipsum.lawconnectplatform.legalcase.domain.services.LegalCaseQueryService;
+import org.lorem.legalcaseservice.domain.model.aggregates.LegalCase;
+import org.lorem.legalcaseservice.domain.model.commands.CreateLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.model.commands.DeleteLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByConsultationIdQuery;
+import org.lorem.legalcaseservice.domain.services.LegalCaseCommandService;
+import org.lorem.legalcaseservice.domain.services.LegalCaseQueryService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 

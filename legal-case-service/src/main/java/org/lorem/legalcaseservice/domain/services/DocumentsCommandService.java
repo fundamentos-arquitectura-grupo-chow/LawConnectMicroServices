@@ -1,7 +1,7 @@
 package org.lorem.legalcaseservice.domain.services;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.AddDocumentByLegalCaseIdCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.ChangeDocumentStatusCommand;
+import org.lorem.legalcaseservice.domain.model.commands.AddDocumentByLegalCaseIdCommand;
+import org.lorem.legalcaseservice.domain.model.commands.ChangeDocumentStatusCommand;
 import org.springframework.stereotype.Service;
 
 @Service

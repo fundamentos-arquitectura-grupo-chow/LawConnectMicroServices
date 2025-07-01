@@ -1,9 +1,9 @@
 package org.lorem.legalcaseservice.domain.services;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.aggregates.LegalCase;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.CloseLegalCaseCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.CreateLegalCaseCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.DeleteLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.model.aggregates.LegalCase;
+import org.lorem.legalcaseservice.domain.model.commands.CloseLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.model.commands.CreateLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.model.commands.DeleteLegalCaseCommand;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

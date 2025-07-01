@@ -1,7 +1,7 @@
 package org.lorem.legalcaseservice.infrastructure.persistence.jpa.repositories;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.aggregates.LegalCase;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.entities.DocumentsItem;
+import org.lorem.legalcaseservice.domain.model.aggregates.LegalCase;
+import org.lorem.legalcaseservice.domain.model.entities.DocumentsItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

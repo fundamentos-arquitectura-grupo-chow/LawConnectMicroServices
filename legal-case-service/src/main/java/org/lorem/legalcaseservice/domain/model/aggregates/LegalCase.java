@@ -1,12 +1,12 @@
 package org.lorem.legalcaseservice.domain.model.aggregates;
 
-import com.loremipsum.lawconnectplatform.consultation.domain.model.aggregates.Consultation;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.CreateLegalCaseCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.valueobjects.Documents;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.valueobjects.LegalCaseStatus;
-import com.loremipsum.lawconnectplatform.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
+import jakarta.persistence.*;
+import org.lorem.legalcaseservice.domain.model.commands.CreateLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.model.valueobjects.Documents;
+import org.lorem.legalcaseservice.domain.model.valueobjects.LegalCaseStatus;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import org.lorem.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 
 @Getter
 @Entity
@@ -23,9 +23,7 @@ public class LegalCase extends AuditableAbstractAggregateRoot<LegalCase> {
     @Column(nullable = false)
     private LegalCaseStatus status;
 
-    @OneToOne
-    @JoinColumn(name = "consultation", nullable = false)
-    private Consultation consultation;
+    private Long consultationId;
 
     @Embedded
     private Documents documents;
@@ -36,11 +34,11 @@ public class LegalCase extends AuditableAbstractAggregateRoot<LegalCase> {
     }
 
 
-    public LegalCase(CreateLegalCaseCommand command, Consultation consultation) {
+    public LegalCase(CreateLegalCaseCommand command) {
         this();
         this.title = command.title();
         this.description = command.description();
-        this.consultation = consultation;
+        this.consultationId = command.consultationId();
     }
 
     public void close() {

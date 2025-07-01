@@ -1,6 +1,6 @@
 package org.lorem.legalcaseservice.domain.model.valueobjects;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.entities.DocumentsItem;
+import org.lorem.legalcaseservice.domain.model.entities.DocumentsItem;
 import lombok.Getter;
 
 import java.util.ArrayList;

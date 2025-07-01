@@ -1,12 +1,12 @@
 package org.lorem.legalcaseservice.application.internal.queryservices;
 
-import com.loremipsum.lawconnectplatform.legalcase.application.internal.outboundServices.ExternalConsultationLegalCaseService;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.aggregates.LegalCase;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetAllLegalCasesQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetLegalCaseByConsultationIdQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetLegalCaseByIdQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.services.LegalCaseQueryService;
-import com.loremipsum.lawconnectplatform.legalcase.infrastructure.persistence.jpa.repositories.LegalCaseRepository;
+import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalConsultationLegalCaseService;
+import org.lorem.legalcaseservice.domain.model.aggregates.LegalCase;
+import org.lorem.legalcaseservice.domain.model.queries.GetAllLegalCasesQuery;
+import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByConsultationIdQuery;
+import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByIdQuery;
+import org.lorem.legalcaseservice.domain.services.LegalCaseQueryService;
+import org.lorem.legalcaseservice.infrastructure.persistence.jpa.repositories.LegalCaseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

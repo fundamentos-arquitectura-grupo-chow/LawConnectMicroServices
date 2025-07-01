@@ -1,7 +1,7 @@
 package org.lorem.legalcaseservice.interfaces.rest.transform;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.CreateLegalCaseCommand;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.resources.CreateLegalCaseResource;
+import org.lorem.legalcaseservice.domain.model.commands.CreateLegalCaseCommand;
+import org.lorem.legalcaseservice.interfaces.rest.resources.CreateLegalCaseResource;
 
 public class CreateLegalCaseCommandFromResourceAssembler {
     public static CreateLegalCaseCommand toCommandFromResource(CreateLegalCaseResource resource) {

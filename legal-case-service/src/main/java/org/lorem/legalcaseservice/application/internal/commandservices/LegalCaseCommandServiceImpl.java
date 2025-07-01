@@ -1,12 +1,12 @@
 package org.lorem.legalcaseservice.application.internal.commandservices;
 
-import com.loremipsum.lawconnectplatform.legalcase.application.internal.outboundServices.ExternalConsultationLegalCaseService;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.aggregates.LegalCase;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.CloseLegalCaseCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.CreateLegalCaseCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.DeleteLegalCaseCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.services.LegalCaseCommandService;
-import com.loremipsum.lawconnectplatform.legalcase.infrastructure.persistence.jpa.repositories.LegalCaseRepository;
+import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalConsultationLegalCaseService;
+import org.lorem.legalcaseservice.domain.model.aggregates.LegalCase;
+import org.lorem.legalcaseservice.domain.model.commands.CloseLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.model.commands.CreateLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.model.commands.DeleteLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.services.LegalCaseCommandService;
+import org.lorem.legalcaseservice.infrastructure.persistence.jpa.repositories.LegalCaseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,7 +27,7 @@ public class LegalCaseCommandServiceImpl implements LegalCaseCommandService {
 
         var consultation = externalConsultationLegalCaseService.getConsultationById(command.consultationId());
 
-        var legalCase = new LegalCase(command, consultation.get());
+        var legalCase = new LegalCase(command);
         legalCaseRepository.save(legalCase);
 
         return Optional.of(legalCase);

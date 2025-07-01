@@ -1,13 +1,13 @@
 package org.lorem.legalcaseservice.application.internal.commandservices;
 
-import com.loremipsum.lawconnectplatform.legalcase.application.internal.outboundServices.ExternalConsultationLegalCaseService;
-import com.loremipsum.lawconnectplatform.legalcase.application.internal.outboundServices.ExternalFollowUpLegalCaseService;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.AddDocumentByLegalCaseIdCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.ChangeDocumentStatusCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.entities.DocumentsItem;
-import com.loremipsum.lawconnectplatform.legalcase.domain.services.DocumentsCommandService;
-import com.loremipsum.lawconnectplatform.legalcase.infrastructure.persistence.jpa.repositories.DocumentsRepository;
-import com.loremipsum.lawconnectplatform.legalcase.infrastructure.persistence.jpa.repositories.LegalCaseRepository;
+import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalConsultationLegalCaseService;
+import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalFollowUpLegalCaseService;
+import org.lorem.legalcaseservice.domain.model.commands.AddDocumentByLegalCaseIdCommand;
+import org.lorem.legalcaseservice.domain.model.commands.ChangeDocumentStatusCommand;
+import org.lorem.legalcaseservice.domain.model.entities.DocumentsItem;
+import org.lorem.legalcaseservice.domain.services.DocumentsCommandService;
+import org.lorem.legalcaseservice.infrastructure.persistence.jpa.repositories.DocumentsRepository;
+import org.lorem.legalcaseservice.infrastructure.persistence.jpa.repositories.LegalCaseRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,13 +16,11 @@ public class DocumentsCommandServiceImpl implements DocumentsCommandService {
     private final DocumentsRepository documentsRepository;
     private final LegalCaseRepository legalCaseRepository;
     private final ExternalFollowUpLegalCaseService externalFollowUpLegalCaseService;
-    private final ExternalConsultationLegalCaseService externalConsultationLegalCaseService;
 
     public DocumentsCommandServiceImpl(DocumentsRepository documentsRepository, LegalCaseRepository legalCaseRepository, ExternalFollowUpLegalCaseService externalFollowUpLegalCaseService, ExternalConsultationLegalCaseService externalConsultationLegalCaseService) {
         this.documentsRepository = documentsRepository;
         this.legalCaseRepository = legalCaseRepository;
         this.externalFollowUpLegalCaseService = externalFollowUpLegalCaseService;
-        this.externalConsultationLegalCaseService = externalConsultationLegalCaseService;
     }
 
     @Override
@@ -34,7 +32,7 @@ public class DocumentsCommandServiceImpl implements DocumentsCommandService {
         }
         var document = new DocumentsItem(command, legalCase.get());
 
-        var consultation = externalConsultationLegalCaseService.getConsultationById(legalCase.get().getConsultation().getId());
+        var consultation = externalConsultationLegalCaseService.getConsultationById(legalCase.get().getConsultationId().getId());
 
         legalCase.get().getDocuments().addDocumentItem(document);
 
@@ -65,7 +63,7 @@ public class DocumentsCommandServiceImpl implements DocumentsCommandService {
             throw new IllegalArgumentException("Legal case not found");
         }
 
-        var consultation = externalConsultationLegalCaseService.getConsultationById(legalCase.get().getConsultation().getId());
+        var consultation = externalConsultationLegalCaseService.getConsultationById(legalCase.get().getConsultationId().getId());
 
         externalFollowUpLegalCaseService.createNotification(
                 "Document status changed",

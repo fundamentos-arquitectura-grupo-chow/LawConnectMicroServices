@@ -1,7 +1,7 @@
 package org.lorem.legalcaseservice.interfaces.rest.transform;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.entities.DocumentsItem;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.resources.DocumentsItemResource;
+import org.lorem.legalcaseservice.domain.model.entities.DocumentsItem;
+import org.lorem.legalcaseservice.interfaces.rest.resources.DocumentsItemResource;
 
 public class DocumentsItemResourceFromEntityAssembler {
     public static DocumentsItemResource toEntityFromResource(DocumentsItem entity){

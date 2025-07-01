@@ -1,9 +1,9 @@
 package org.lorem.legalcaseservice.domain.model.entities;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.aggregates.LegalCase;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.AddDocumentByLegalCaseIdCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.valueobjects.DocumentType;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.valueobjects.DocumentsStatus;
+import org.lorem.legalcaseservice.domain.model.aggregates.LegalCase;
+import org.lorem.legalcaseservice.domain.model.commands.AddDocumentByLegalCaseIdCommand;
+import org.lorem.legalcaseservice.domain.model.valueobjects.DocumentType;
+import org.lorem.legalcaseservice.domain.model.valueobjects.DocumentsStatus;
 import com.loremipsum.lawconnectplatform.shared.domain.model.entities.AuditableModel;
 import lombok.Getter;
 import lombok.Setter;

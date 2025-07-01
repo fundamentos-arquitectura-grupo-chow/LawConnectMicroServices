@@ -1,16 +1,16 @@
 package org.lorem.legalcaseservice.interfaces.rest;
 
-import com.loremipsum.lawconnectplatform.legalcase.application.internal.outboundServices.ExternalConsultationLegalCaseService;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.CloseLegalCaseCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetAllLegalCasesQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetLegalCaseByConsultationIdQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetLegalCaseByIdQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.services.LegalCaseCommandService;
-import com.loremipsum.lawconnectplatform.legalcase.domain.services.LegalCaseQueryService;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.resources.CreateLegalCaseResource;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.resources.LegalCaseResource;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.transform.CreateLegalCaseCommandFromResourceAssembler;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.transform.LegalCaseResourceFromEntityAssembler;
+import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalConsultationLegalCaseService;
+import org.lorem.legalcaseservice.domain.model.commands.CloseLegalCaseCommand;
+import org.lorem.legalcaseservice.domain.model.queries.GetAllLegalCasesQuery;
+import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByConsultationIdQuery;
+import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByIdQuery;
+import org.lorem.legalcaseservice.domain.services.LegalCaseCommandService;
+import org.lorem.legalcaseservice.domain.services.LegalCaseQueryService;
+import org.lorem.legalcaseservice.interfaces.rest.resources.CreateLegalCaseResource;
+import org.lorem.legalcaseservice.interfaces.rest.resources.LegalCaseResource;
+import org.lorem.legalcaseservice.interfaces.rest.transform.CreateLegalCaseCommandFromResourceAssembler;
+import org.lorem.legalcaseservice.interfaces.rest.transform.LegalCaseResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,7 +40,7 @@ public class LegalCaseController {
         if(legalCase.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.get().getConsultation());
+        var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.get().getConsultationId());
         var legalCaseResource = LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase.get(), consultationResource.get());
         return new ResponseEntity<>(legalCaseResource, HttpStatus.CREATED);
     }
@@ -52,7 +52,7 @@ public class LegalCaseController {
         if(legalCase.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.get().getConsultation());
+        var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.get().getConsultationId());
         var legalCaseResource = LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase.get(), consultationResource.get());
         return ResponseEntity.ok(legalCaseResource);
     }
@@ -62,7 +62,7 @@ public class LegalCaseController {
         var legalCaseResources = legalAllCasesQuery
                 .stream()
                 .map(legalCase -> {
-                    var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.getConsultation());
+                    var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.getConsultationId());
                     return LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase, consultationResource.get());
                 })
                 .toList();
@@ -81,7 +81,7 @@ public class LegalCaseController {
         if(legalCase.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.get().getConsultation());
+        var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.get().getConsultationId());
         var legalCaseResource = LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase.get(), consultationResource.get());
         return ResponseEntity.ok(legalCaseResource);
     }

@@ -1,8 +1,8 @@
 package org.lorem.legalcaseservice.domain.services;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.entities.DocumentsItem;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetAllDocumentsByLegalCaseQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetDocumentByIdQuery;
+import org.lorem.legalcaseservice.domain.model.entities.DocumentsItem;
+import org.lorem.legalcaseservice.domain.model.queries.GetAllDocumentsByLegalCaseQuery;
+import org.lorem.legalcaseservice.domain.model.queries.GetDocumentByIdQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

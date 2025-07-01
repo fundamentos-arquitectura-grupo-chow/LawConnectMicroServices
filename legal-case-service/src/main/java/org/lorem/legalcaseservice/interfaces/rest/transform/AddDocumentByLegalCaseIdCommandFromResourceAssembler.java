@@ -1,7 +1,7 @@
 package org.lorem.legalcaseservice.interfaces.rest.transform;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.AddDocumentByLegalCaseIdCommand;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.resources.AddDocumentByLegalCaseIdResource;
+import org.lorem.legalcaseservice.domain.model.commands.AddDocumentByLegalCaseIdCommand;
+import org.lorem.legalcaseservice.interfaces.rest.resources.AddDocumentByLegalCaseIdResource;
 
 public class AddDocumentByLegalCaseIdCommandFromResourceAssembler {
     public static AddDocumentByLegalCaseIdCommand toCommandFromResource(AddDocumentByLegalCaseIdResource resource) {

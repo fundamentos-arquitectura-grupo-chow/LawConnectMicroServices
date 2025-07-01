@@ -1,9 +1,9 @@
 package org.lorem.legalcaseservice.domain.services;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.aggregates.LegalCase;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetAllLegalCasesQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetLegalCaseByConsultationIdQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetLegalCaseByIdQuery;
+import org.lorem.legalcaseservice.domain.model.aggregates.LegalCase;
+import org.lorem.legalcaseservice.domain.model.queries.GetAllLegalCasesQuery;
+import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByConsultationIdQuery;
+import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByIdQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

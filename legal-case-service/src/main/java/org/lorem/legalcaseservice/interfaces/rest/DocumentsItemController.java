@@ -1,14 +1,14 @@
 package org.lorem.legalcaseservice.interfaces.rest;
 
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.commands.ChangeDocumentStatusCommand;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetAllDocumentsByLegalCaseQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.model.queries.GetDocumentByIdQuery;
-import com.loremipsum.lawconnectplatform.legalcase.domain.services.DocumentsCommandService;
-import com.loremipsum.lawconnectplatform.legalcase.domain.services.DocumentsQueryService;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.resources.AddDocumentByLegalCaseIdResource;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.resources.DocumentsItemResource;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.transform.AddDocumentByLegalCaseIdCommandFromResourceAssembler;
-import com.loremipsum.lawconnectplatform.legalcase.interfaces.rest.transform.DocumentsItemResourceFromEntityAssembler;
+import org.lorem.legalcaseservice.domain.model.commands.ChangeDocumentStatusCommand;
+import org.lorem.legalcaseservice.domain.model.queries.GetAllDocumentsByLegalCaseQuery;
+import org.lorem.legalcaseservice.domain.model.queries.GetDocumentByIdQuery;
+import org.lorem.legalcaseservice.domain.services.DocumentsCommandService;
+import org.lorem.legalcaseservice.domain.services.DocumentsQueryService;
+import org.lorem.legalcaseservice.interfaces.rest.resources.AddDocumentByLegalCaseIdResource;
+import org.lorem.legalcaseservice.interfaces.rest.resources.DocumentsItemResource;
+import org.lorem.legalcaseservice.interfaces.rest.transform.AddDocumentByLegalCaseIdCommandFromResourceAssembler;
+import org.lorem.legalcaseservice.interfaces.rest.transform.DocumentsItemResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
