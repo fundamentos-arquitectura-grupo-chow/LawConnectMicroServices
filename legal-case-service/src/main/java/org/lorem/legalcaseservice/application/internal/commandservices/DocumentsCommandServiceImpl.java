@@ -32,8 +32,6 @@ public class DocumentsCommandServiceImpl implements DocumentsCommandService {
         }
         var document = new DocumentsItem(command, legalCase.get());
 
-        var consultation = externalConsultationLegalCaseService.getConsultationById(legalCase.get().getConsultationId().getId());
-
         legalCase.get().getDocuments().addDocumentItem(document);
 
         externalFollowUpLegalCaseService.createNotification(
@@ -43,7 +41,7 @@ public class DocumentsCommandServiceImpl implements DocumentsCommandService {
                         "\n ype: " + document.getType() +
                         "\n Status: " + document.getStatus(),
                         consultation.get().getClientId(),
-                        consultation.get().getId()
+                        legalCase.get().getConsultationId()
         );
 
         documentsRepository.save(document);

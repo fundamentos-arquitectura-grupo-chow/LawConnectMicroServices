@@ -1,8 +1,8 @@
-package org.lorem.communicationservice.internal.commandservices;
+package org.lorem.communicationservice.application.internal.commandservices;
 
 import org.springframework.stereotype.Service;
-import org.lorem.communicationservice.internal.outboundServices.ExternalConsultationCommunicationService;
-import org.lorem.communicationservice.internal.outboundServices.ExternalFollowUpCommunicationService;
+import org.lorem.communicationservice.application.internal.outboundServices.ExternalConsultationCommunicationService;
+import org.lorem.communicationservice.application.internal.outboundServices.ExternalFollowUpCommunicationService;
 import org.lorem.communicationservice.internal.outboundServices.ExternalPaymentCommunicationService;
 import org.lorem.communicationservice.domain.model.aggregates.VideoCall;
 import org.lorem.communicationservice.domain.model.commands.CreateVideoCallCommand;
@@ -17,13 +17,11 @@ public class VideoCallCommandServiceImpl implements VideoCallCommandService {
     private final VideoCallRepository videoCallRepository;
     private final ExternalConsultationCommunicationService externalConsultationCommunicationService;
     private final ExternalFollowUpCommunicationService externalFollowUpCommunicationService;
-    private final ExternalPaymentCommunicationService externalPaymentCommunicationService;
 
-    public VideoCallCommandServiceImpl(VideoCallRepository videoCallRepository, ExternalConsultationCommunicationService externalConsultationCommunicationService, ExternalFollowUpCommunicationService externalFollowUpCommunicationService, ExternalPaymentCommunicationService externalPaymentCommunicationService) {
+    public VideoCallCommandServiceImpl(VideoCallRepository videoCallRepository, ExternalConsultationCommunicationService externalConsultationCommunicationService, ExternalFollowUpCommunicationService externalFollowUpCommunicationService) {
         this.videoCallRepository = videoCallRepository;
         this.externalConsultationCommunicationService = externalConsultationCommunicationService;
         this.externalFollowUpCommunicationService = externalFollowUpCommunicationService;
-        this.externalPaymentCommunicationService = externalPaymentCommunicationService;
     }
 
     @Override

@@ -20,7 +20,6 @@ public class ProfileGrpcService extends ProfileServiceGrpc.ProfileServiceImplBas
 
     @Override
     public void createClient(ClientRequest request, StreamObserver<EmptyResponse> responseObserver) {
-        // Aquí llamas a tu fachada de dominio
         profileContextFacade.createClient(
                 request.getFirstName(), request.getLastName(), request.getEmail(),
                 request.getPhoneNumber(), request.getAddress(), request.getDni(), request.getImageUrl()

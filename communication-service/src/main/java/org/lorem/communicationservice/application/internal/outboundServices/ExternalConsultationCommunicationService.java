@@ -1,4 +1,4 @@
-package org.lorem.communicationservice.internal.outboundServices;
+package org.lorem.communicationservice.application.internal.outboundServices;
 
 import org.springframework.stereotype.Service;
 import upc.LoremIpsum.lawconnectplatform.consultation.domain.model.aggregates.Consultation;

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.lorem.communicationservice.internal.outboundServices.ExternalConsultationCommunicationService;
+import org.lorem.communicationservice.application.internal.outboundServices.ExternalConsultationCommunicationService;
 import org.lorem.communicationservice.domain.model.queries.GetAllAppointmentsByConsultationIdQuery;
 import org.lorem.communicationservice.domain.services.AppointmentCommandService;
 import org.lorem.communicationservice.domain.services.AppointmentQueryService;

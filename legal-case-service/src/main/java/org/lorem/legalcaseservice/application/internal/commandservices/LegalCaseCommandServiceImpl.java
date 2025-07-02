@@ -1,6 +1,5 @@
 package org.lorem.legalcaseservice.application.internal.commandservices;
 
-import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalConsultationLegalCaseService;
 import org.lorem.legalcaseservice.domain.model.aggregates.LegalCase;
 import org.lorem.legalcaseservice.domain.model.commands.CloseLegalCaseCommand;
 import org.lorem.legalcaseservice.domain.model.commands.CreateLegalCaseCommand;
@@ -15,17 +14,13 @@ import java.util.Optional;
 public class LegalCaseCommandServiceImpl implements LegalCaseCommandService {
 
     private final LegalCaseRepository legalCaseRepository;
-    private final ExternalConsultationLegalCaseService externalConsultationLegalCaseService;
 
-    public LegalCaseCommandServiceImpl(LegalCaseRepository legalCaseRepository, ExternalConsultationLegalCaseService externalConsultationLegalCaseService) {
+    public LegalCaseCommandServiceImpl(LegalCaseRepository legalCaseRepository) {
         this.legalCaseRepository = legalCaseRepository;
-        this.externalConsultationLegalCaseService = externalConsultationLegalCaseService;
     }
 
     @Override
     public Optional<LegalCase> handle(CreateLegalCaseCommand command) {
-
-        var consultation = externalConsultationLegalCaseService.getConsultationById(command.consultationId());
 
         var legalCase = new LegalCase(command);
         legalCaseRepository.save(legalCase);
@@ -45,6 +40,4 @@ public class LegalCaseCommandServiceImpl implements LegalCaseCommandService {
         var legalCase = legalCaseRepository.findById(command.legalCaseId());
         legalCase.ifPresent(legalCaseRepository::delete);
     }
-
-
 }

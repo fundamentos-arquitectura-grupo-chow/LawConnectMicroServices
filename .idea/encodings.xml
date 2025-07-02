@@ -4,10 +4,18 @@
     <file url="file://$PROJECT_DIR$/api-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/communication-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/consultation-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/consultation-service/target/generated-sources/protobuf/grpc-java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/consultation-service/target/generated-sources/protobuf/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/feeing-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/follow-up-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/follow-up-service/target/generated-sources/protobuf/grpc-java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/follow-up-service/target/generated-sources/protobuf/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/iam-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iam-service/target/generated-sources/protobuf/grpc-java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iam-service/target/generated-sources/protobuf/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/legal-case-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/legal-case-service/target/generated-sources/protobuf/grpc-java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/legal-case-service/target/generated-sources/protobuf/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/profiles-service/src/main/java" charset="UTF-8" />
   </component>
 </project>

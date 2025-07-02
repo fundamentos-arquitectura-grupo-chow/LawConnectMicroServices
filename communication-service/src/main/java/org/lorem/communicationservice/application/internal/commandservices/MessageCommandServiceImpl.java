@@ -1,4 +1,4 @@
-package org.lorem.communicationservice.internal.commandservices;
+package org.lorem.communicationservice.application.internal.commandservices;
 
 import org.springframework.stereotype.Service;
 import org.lorem.communicationservice.domain.model.commands.AddMessageByChatRoomIdCommand;

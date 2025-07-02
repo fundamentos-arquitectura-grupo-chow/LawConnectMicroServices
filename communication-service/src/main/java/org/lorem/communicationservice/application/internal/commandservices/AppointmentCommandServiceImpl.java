@@ -1,8 +1,8 @@
-package org.lorem.communicationservice.internal.commandservices;
+package org.lorem.communicationservice.application.internal.commandservices;
 
 import org.springframework.stereotype.Service;
-import org.lorem.communicationservice.internal.outboundServices.ExternalConsultationCommunicationService;
-import org.lorem.communicationservice.internal.outboundServices.ExternalFollowUpCommunicationService;
+import org.lorem.communicationservice.application.internal.outboundServices.ExternalConsultationCommunicationService;
+import org.lorem.communicationservice.application.internal.outboundServices.ExternalFollowUpCommunicationService;
 import org.lorem.communicationservice.internal.outboundServices.ExternalPaymentCommunicationService;
 import org.lorem.communicationservice.domain.model.aggregates.Appointment;
 import org.lorem.communicationservice.domain.model.commands.CreateAppointmentCommand;
@@ -17,13 +17,11 @@ public class AppointmentCommandServiceImpl implements AppointmentCommandService 
     private final AppointmentRepository appointmentRepository;
     private final ExternalConsultationCommunicationService externalConsultationCommunicationService;
     private final ExternalFollowUpCommunicationService externalFollowUpCommunicationService;
-    private final ExternalPaymentCommunicationService externalPaymentCommunicationService;
 
-    public AppointmentCommandServiceImpl(AppointmentRepository appointmentRepository, ExternalConsultationCommunicationService externalConsultationCommunicationService, ExternalFollowUpCommunicationService externalFollowUpCommunicationService, ExternalPaymentCommunicationService externalPaymentCommunicationService) {
+    public AppointmentCommandServiceImpl(AppointmentRepository appointmentRepository, ExternalConsultationCommunicationService externalConsultationCommunicationService, ExternalFollowUpCommunicationService externalFollowUpCommunicationService)  {
         this.appointmentRepository = appointmentRepository;
         this.externalConsultationCommunicationService = externalConsultationCommunicationService;
         this.externalFollowUpCommunicationService = externalFollowUpCommunicationService;
-        this.externalPaymentCommunicationService = externalPaymentCommunicationService;
     }
 
     @Override

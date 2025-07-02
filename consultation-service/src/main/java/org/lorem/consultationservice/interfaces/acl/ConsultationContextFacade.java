@@ -56,5 +56,12 @@ public class ConsultationContextFacade {
         return Optional.empty();
     }
 
+    public Long getClientIdById(Long consultationId) {
+        var consultation = consultationQueryService.handle(new GetConsultationByIdQuery(consultationId));
+        return consultation.get().getClientId();
+    }
 
+    public boolean existConsultationById(Long consultationId) {
+        return consultationQueryService.handle(new GetConsultationByIdQuery(consultationId)).isPresent();
+    }
 }

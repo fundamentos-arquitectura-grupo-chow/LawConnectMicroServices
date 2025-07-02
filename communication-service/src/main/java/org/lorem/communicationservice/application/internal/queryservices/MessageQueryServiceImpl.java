@@ -1,4 +1,4 @@
-package org.lorem.communicationservice.internal.queryservices;
+package org.lorem.communicationservice.application.internal.queryservices;
 
 import org.springframework.stereotype.Service;
 import org.lorem.communicationservice.domain.model.entities.MessageItem;
