@@ -1,4 +1,4 @@
-package org.lorem.feeingservice.internal.outboundServices;
+package org.lorem.feeingservice.application.internal.outboundServices;
 
 import org.lorem.feeingservice.domain.model.valueObjects.ConsultationDto;
 import org.lorem.feeingservice.infrastructure.grpc.ConsultationGrpcClient;
@@ -23,7 +23,7 @@ public class ExternalConsultationPaymentService {
         return consultationGrpcClient.getConsultationByPaymentId(paymentId);
     }
 
-    public Optional<ConsultationDto> getConsultationById(Long consultationId) {
-        return consultationGrpcClient.getConsultationById(consultationId);
+    public Long getConsultationId(Long consultationId) {
+        return consultationGrpcClient.getConsultationId(consultationId);
     }
 }

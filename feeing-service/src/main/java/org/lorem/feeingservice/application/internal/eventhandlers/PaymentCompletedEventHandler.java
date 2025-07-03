@@ -1,8 +1,8 @@
-package org.lorem.feeingservice.internal.eventhandlers;
+package org.lorem.feeingservice.application.internal.eventhandlers;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import org.lorem.feeingservice.internal.outboundServices.ExternalConsultationPaymentService;
+import org.lorem.feeingservice.application.internal.outboundServices.ExternalConsultationPaymentService;
 import org.lorem.feeingservice.domain.model.events.PaymentCompletedEvent;
 
 @Service

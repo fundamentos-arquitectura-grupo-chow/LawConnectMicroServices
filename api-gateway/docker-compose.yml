@@ -175,6 +175,49 @@ services:
       - lawconnect-network
     restart: on-failure
 
+  feeing-service-db:
+    image: postgres:15
+    container_name: feeing-service-db-container
+    environment:
+      POSTGRES_DB: feeing_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5436:5432" #
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d feeing_database" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - lawconnect-network
+
+  feeing-service:
+    build:
+      context: ../feeing-service
+      dockerfile: Dockerfile
+    container_name: feeing-service-container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://feeing-service-db:5432/feeing_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_APPLICATION_JSON: '{
+        "spring.main.allow-circular-references": true,
+        "spring.jpa.show-sql": true,
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "spring.jpa.open-in-view": true,
+        "spring.servlet.multipart.enabled": true
+      }'
+    ports:
+      - "8005:8005"
+      - "6571:6565"
+    depends_on:
+      profiles-service-db:
+        condition: service_healthy
+    networks:
+      - lawconnect-network
+    restart: on-failure
+
   api-gateway:
     build:
       context: .

@@ -1,9 +1,9 @@
-package org.lorem.feeingservice.internal.commandServices;
+package org.lorem.feeingservice.application.internal.commandServices;
 
-import org.lorem.feeingservice.domain.model.valueObjects.ConsultationDto;
+import org.lorem.feeingservice.infrastructure.grpc.ConsultationGrpcClient;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.lorem.feeingservice.internal.outboundServices.ExternalConsultationPaymentService;
+import org.lorem.feeingservice.application.internal.outboundServices.ExternalConsultationPaymentService;
 import org.lorem.feeingservice.domain.model.aggregates.Payment;
 import org.lorem.feeingservice.domain.model.commands.CompletePaymentCommand;
 import org.lorem.feeingservice.domain.model.commands.CreatePaymentCommand;
@@ -19,22 +19,25 @@ public class PaymentCommandServiceImpl implements PaymentCommandService {
 
     private final PaymentRepository paymentRepository;
     private final ExternalConsultationPaymentService externalConsultationPaymentService;
+    private final ConsultationGrpcClient consultationGrpcClient;
 
     public PaymentCommandServiceImpl(
             PaymentRepository paymentRepository,
-            @Lazy ExternalConsultationPaymentService externalConsultationPaymentService1) {
+            @Lazy ExternalConsultationPaymentService externalConsultationPaymentService1, ConsultationGrpcClient consultationGrpcClient) {
         this.paymentRepository = paymentRepository;
         this.externalConsultationPaymentService = externalConsultationPaymentService1;
+        this.consultationGrpcClient = consultationGrpcClient;
     }
 
     @Override
     public Optional<Payment> handle(CreatePaymentCommand command) {
-        var consultationOptional = externalConsultationPaymentService.getConsultationById(command.consultationId());
-        if (consultationOptional.isEmpty()) {
+        //var consultationOptional = externalConsultationPaymentService.getConsultationId(command.consultationId());
+        var consultationId = consultationGrpcClient.getConsultationId(command.consultationId());
+        /*if (consultationOptional == 0) {
             return Optional.empty();
-        }
-        ConsultationDto consultationDto = ConsultationDto.fromConsultation(consultationOptional.get());
-        var payment = new Payment(command, consultationDto);
+        }*/
+        //ConsultationDto consultationDto = ConsultationDto.fromConsultation(consultationOptional.get());
+        var payment = new Payment(command, consultationId);
         System.out.println("Payment created");
         paymentRepository.save(payment);
         return Optional.of(payment);

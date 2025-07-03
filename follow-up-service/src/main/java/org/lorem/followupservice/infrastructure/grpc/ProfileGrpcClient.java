@@ -1,9 +1,10 @@
 package org.lorem.followupservice.infrastructure.grpc;
 
 import org.springframework.stereotype.Service;
-import profile.ClientDetailRequest;
-import profile.ClientDetailResponse;
+
 import profile.ProfileServiceGrpc;
+import profile.ProfileOuterClass.ClientDetailRequest;
+import profile.ProfileOuterClass.ClientDetailResponse;
 
 import java.util.Optional;
 
@@ -41,4 +42,4 @@ public class ProfileGrpcClient {
             return Optional.empty();
         }
     }
-}
+}92528

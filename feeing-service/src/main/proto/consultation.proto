@@ -4,13 +4,17 @@ option java_multiple_files = true;
 package consultation;
 
 service ConsultationService {
-  rpc GetConsultationById (GetConsultationByIdRequest) returns (ConsultationResponse);
+  rpc GetConsultationId (GetConsultationIdRequest) returns (ConsultationIdResponse);
   rpc GetConsultationByPaymentId (GetConsultationByPaymentIdRequest) returns (ConsultationResponse);
   rpc ChangeConsultationStatus (ChangeConsultationStatusRequest) returns (EmptyResponse);
 }
 
-message GetConsultationByIdRequest {
-  int64 consultation_id = 1;
+message GetConsultationIdRequest {
+  int64 consultationId = 1;
+}
+
+message ConsultationIdResponse {
+  int64 consultationId = 1;
 }
 
 message GetConsultationByPaymentIdRequest {

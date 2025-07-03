@@ -1,18 +1,15 @@
 package org.lorem.feeingservice.infrastructure.grpc;
 
+import consultation.*;
 import consultation.ConsultationServiceGrpc;
-import consultation.GetConsultationByIdRequest;
-import consultation.GetConsultationByPaymentIdRequest;
-import consultation.ChangeConsultationStatusRequest;
-import consultation.ConsultationResponse;
+
+
 import org.lorem.feeingservice.domain.model.valueObjects.ConsultationDto;
 
-import org.springframework.stereotype.Service;
+
 
 import java.util.Optional;
 
-
-@Service
 public class ConsultationGrpcClient {
 
    private final ConsultationServiceGrpc.ConsultationServiceBlockingStub stub;
@@ -23,18 +20,15 @@ public class ConsultationGrpcClient {
         this.stub = stub;
     }
 
-    public Optional<ConsultationDto> getConsultationById(Long consultationId) {
-        try {
-            ConsultationResponse response = stub.getConsultationById(
-                    GetConsultationByIdRequest.newBuilder()
-                            .setConsultationId(consultationId)
-                            .build()
-            );
-            return Optional.of(mapToDto(response));
-        } catch (Exception e) {
-            return Optional.empty();
-        }
+    public Long getConsultationId(Long consultationId) {
+        GetConsultationIdRequest request = GetConsultationIdRequest.newBuilder()
+                .setConsultationId(consultationId)
+                .build();
+        ConsultationIdResponse response = stub.getConsultationId(request);
+        return response.getConsultationId();
     }
+
+
 
     public Optional<ConsultationDto> getConsultationByPaymentId(Long paymentId) {
         try {

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package profile;
+
+service ProfileService {
+  rpc GetClientDetail(ClientDetailRequest) returns (ClientDetailResponse);
+}
+
+message ClientDetailRequest {
+  int64 client_id = 1;
+}
+
+message ClientDetailResponse {
+  string email = 1;
+  string phone_number = 2;
+}

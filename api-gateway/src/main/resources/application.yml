@@ -31,6 +31,13 @@ spring:
           filters:
             - JwtValidation
 
+        - id: feeing-service-route
+          uri: http://feeing-service:8005
+          predicates:
+            - Path=/api/v1/feeing/**
+          filters:
+
+
 iam:
   service:
     url: http://iam-service:8001
