@@ -14,9 +14,9 @@ FROM openjdk:21-jdk AS runner
 
 WORKDIR /app
 
-COPY --from=builder ./app/target/follow-up-service-0.0.1-SNAPSHOT.jar ./app.jar
+COPY --from=builder ./app/target/legal-case-service-0.0.1-SNAPSHOT.jar ./app.jar
 
 
-EXPOSE 8004
+EXPOSE 8006
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -1,6 +1,5 @@
 package org.lorem.legalcaseservice.interfaces.rest;
 
-import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalConsultationLegalCaseService;
 import org.lorem.legalcaseservice.domain.model.commands.CloseLegalCaseCommand;
 import org.lorem.legalcaseservice.domain.model.queries.GetAllLegalCasesQuery;
 import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByConsultationIdQuery;
@@ -15,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,12 +25,10 @@ public class LegalCaseController {
 
     private final LegalCaseCommandService legalCaseCommandService;
     private final LegalCaseQueryService legalCaseQueryService;
-    private final ExternalConsultationLegalCaseService externalConsultationLegalCaseService;
 
-    public LegalCaseController(LegalCaseCommandService legalCaseCommandService, LegalCaseQueryService legalCaseQueryService, ExternalConsultationLegalCaseService externalConsultationLegalCaseService) {
+    public LegalCaseController(LegalCaseCommandService legalCaseCommandService, LegalCaseQueryService legalCaseQueryService) {
         this.legalCaseCommandService = legalCaseCommandService;
         this.legalCaseQueryService = legalCaseQueryService;
-        this.externalConsultationLegalCaseService = externalConsultationLegalCaseService;
     }
 
     @PostMapping
@@ -40,8 +38,7 @@ public class LegalCaseController {
         if(legalCase.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.get().getConsultationId());
-        var legalCaseResource = LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase.get(), consultationResource.get());
+        var legalCaseResource = LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase.get());
         return new ResponseEntity<>(legalCaseResource, HttpStatus.CREATED);
     }
 
@@ -52,8 +49,7 @@ public class LegalCaseController {
         if(legalCase.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.get().getConsultationId());
-        var legalCaseResource = LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase.get(), consultationResource.get());
+        var legalCaseResource = LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase.get());
         return ResponseEntity.ok(legalCaseResource);
     }
     @GetMapping
@@ -61,10 +57,7 @@ public class LegalCaseController {
         var legalAllCasesQuery = legalCaseQueryService.handle(new GetAllLegalCasesQuery());
         var legalCaseResources = legalAllCasesQuery
                 .stream()
-                .map(legalCase -> {
-                    var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.getConsultationId());
-                    return LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase, consultationResource.get());
-                })
+                .map(LegalCaseResourceFromEntityAssembler::toEntityFromResource)
                 .toList();
         return ResponseEntity.ok(legalCaseResources);
     }
@@ -81,8 +74,7 @@ public class LegalCaseController {
         if(legalCase.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        var consultationResource = externalConsultationLegalCaseService.createConsultationResource(legalCase.get().getConsultationId());
-        var legalCaseResource = LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase.get(), consultationResource.get());
+        var legalCaseResource = LegalCaseResourceFromEntityAssembler.toEntityFromResource(legalCase.get());
         return ResponseEntity.ok(legalCaseResource);
     }
 }

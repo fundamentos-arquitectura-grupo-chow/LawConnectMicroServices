@@ -22,7 +22,7 @@ COPY --from=builder ./app/target/iam-service-0.0.1-SNAPSHOT.jar ./app.jar
 ENV AUTHORIZATION_JWT_SECRET=clave_secreta_para_firmar_jwt_tokens
 ENV AUTHORIZATION_JWT_EXPIRATION_DAYS=7
 
-EXPOSE 8001
+EXPOSE 8005
 
 # Iniciar PostgreSQL y la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]

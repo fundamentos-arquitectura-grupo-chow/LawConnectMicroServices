@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.lorem.communicationservice.application.internal.outboundServices.ExternalConsultationCommunicationService;
 import org.lorem.communicationservice.domain.model.queries.GetAllAppointmentsByConsultationIdQuery;
 import org.lorem.communicationservice.domain.services.AppointmentCommandService;
 import org.lorem.communicationservice.domain.services.AppointmentQueryService;
@@ -18,27 +17,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/api/v1/Appointment", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/appointment", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Appointment", description = "Appointments Endpoints")
 public class AppointmentController {
 
     private final AppointmentCommandService appointmentCommandService;
     private final AppointmentQueryService appointmentQueryService;
-    private final ExternalConsultationCommunicationService externalConsultationCommunicationService;
 
-    public AppointmentController(AppointmentCommandService appointmentCommandService, AppointmentQueryService appointmentQueryService, ExternalConsultationCommunicationService externalConsultationCommunicationService) {
+    public AppointmentController(AppointmentCommandService appointmentCommandService, AppointmentQueryService appointmentQueryService) {
         this.appointmentCommandService = appointmentCommandService;
         this.appointmentQueryService = appointmentQueryService;
-        this.externalConsultationCommunicationService = externalConsultationCommunicationService;
     }
+
 
     @PostMapping
     public ResponseEntity<AppointmentResource> createAppointment(@RequestBody CreateAppointmentResource resource) {
         var createAppointmentCommand = CreateAppointmentCommandFromResourceAssembler.toCommandFromResource(resource);
         var appointment = appointmentCommandService.handle(createAppointmentCommand);
         if (appointment.isEmpty()) return ResponseEntity.badRequest().build();
-        var consultation = externalConsultationCommunicationService.getConsultationById(resource.consultationId());
-        var consultationResource = externalConsultationCommunicationService.createConsultationResource(consultation.get());
         var appointmentResource = AppointmentResourceFromEntityAssembler.toResourceFromEntity(appointment.get());
         return new ResponseEntity<>(appointmentResource, HttpStatus.CREATED);
     }
@@ -48,8 +44,6 @@ public class AppointmentController {
         var getAppointmentByIdQuery = new GetAllAppointmentsByConsultationIdQuery(consultationId);
         var appointment = appointmentQueryService.handle(getAppointmentByIdQuery);
         if (appointment.isEmpty()) return ResponseEntity.notFound().build();
-        var consultation = externalConsultationCommunicationService.getConsultationById(consultationId);
-        var consultationResource = externalConsultationCommunicationService.createConsultationResource(consultation.get());
         var appointmentResource = appointment.stream()
                 .map(
                         AppointmentResourceFromEntityAssembler::toResourceFromEntity

@@ -18,7 +18,7 @@ WORKDIR /app
 
 COPY --from=builder ./app/target/profiles-service-0.0.1-SNAPSHOT.jar ./app.jar
 
-EXPOSE 8004
+EXPOSE 8007
 
 # Iniciar PostgreSQL y la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]

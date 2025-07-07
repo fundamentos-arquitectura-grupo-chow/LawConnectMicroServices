@@ -5,27 +5,48 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: iam-service-route
-          uri: http://iam-service:8001
+        - id: communication-service-route
+          uri: http://communication-service:8001
           predicates:
-            - Path=/api/v1/authentication/**,/api/v1/roles/**,/api/v1/users/**
-
-        - id: follow-up-service-route
-          uri: http://follow-up-service:8002
-          predicates:
-            - Path=/api/v1/notification/**,/api/v1/follow-up/**
+            - Path=/api/v1/appointment/**, /api/v1/chatRoom/**, /api/v1/message/**, /api/v1/video_call/**
           filters:
             - JwtValidation
 
         - id: consultation-service-route
-          uri: http://consultation-service:8003
+          uri: http://consultation-service:8002
           predicates:
             - Path=/api/v1/consultations/**
           filters:
             - JwtValidation
 
+        - id: feeing-service-route
+          uri: http://feeing-service:8003
+          predicates:
+            - Path=/v1/api/payments/**
+          filters:
+            - JwtValidation
+
+        - id: follow-up-service-route
+          uri: http://follow-up-service:8004
+          predicates:
+            - Path=/api/v1/notification/**,/api/v1/follow-up/**
+          filters:
+            - JwtValidation
+
+        - id: iam-service-route
+          uri: http://iam-service:8005
+          predicates:
+            - Path=/api/v1/authentication/**,/api/v1/roles/**,/api/v1/users/**
+
+        - id: legal-case-service-route
+          uri: http://legal-case-service:8006
+          predicates:
+            - Path=/api/v1/legal_cases/**, /api/v1/documents/**
+          filters:
+            - JwtValidation
+
         - id: profiles-service-route
-          uri: http://profiles-service:8004
+          uri: http://profiles-service:8007
           predicates:
             - Path=/api/v1/profiles/**
           filters:
@@ -33,4 +54,4 @@ spring:
 
 iam:
   service:
-    url: http://iam-service:8001
+    url: http://iam-service:8005
