@@ -1,5 +1,8 @@
 package org.lorem.legalcaseservice.domain.model.valueobjects;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.OneToMany;
 import org.lorem.legalcaseservice.domain.model.entities.DocumentsItem;
 import lombok.Getter;
 
