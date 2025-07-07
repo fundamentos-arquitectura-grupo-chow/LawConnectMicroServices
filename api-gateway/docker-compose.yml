@@ -338,7 +338,7 @@ services:
     container_name: api-gateway-container
     ports:
       - "8000:8000"
-      - "6570:6565"
+      - "6573:6565"
     networks:
       - lawconnect-network
     depends_on:
