@@ -1,32 +1,55 @@
 version: '3.9'
 
 services:
-  iam-service-db:
-    image: postgres:15
-    container_name: iam-service-db-container
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: zookeeper
     environment:
-      POSTGRES_DB: iam_database
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+    networks:
+      - lawconnect-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: kafka
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    networks:
+      - lawconnect-network
+
+  communication-service-db:
+    image: postgres:15
+    container_name: communication-service-db-container
+    environment:
+      POSTGRES_DB: communication_database
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     ports:
-      - "5432:5432"
+      - "5433:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d iam_database"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d communication_database"]
       interval: 5s
       timeout: 5s
       retries: 10
     networks:
       - lawconnect-network
 
-  iam-service:
+  communication-service:
     build:
-      context: ../iam-service
+      context: ../communication-service
       dockerfile: Dockerfile
-    container_name: iam-service-container
+    container_name: communication-service-container
     environment:
-      AUTHORIZATION_JWT_SECRET: clave_secreta_para_firmar_jwt_tokens
-      AUTHORIZATION_JWT_EXPIRATION_DAYS: 7
-      SPRING_DATASOURCE_URL: jdbc:postgresql://iam-service-db:5432/iam_database
+      SPRING_DATASOURCE_URL: jdbc:postgresql://communication-service-db:5432/communication_database
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_APPLICATION_JSON: '{
@@ -40,50 +63,7 @@ services:
       - "8001:8001"
       - "6566:6565"
     depends_on:
-      iam-service-db:
-        condition: service_healthy
-    networks:
-      - lawconnect-network
-    restart: on-failure
-
-  follow-up-service-db:
-    image: postgres:15
-    container_name: follow-up-service-db-container
-    environment:
-      POSTGRES_DB: follow_up_database
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5433:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d follow_up_database"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    networks:
-      - lawconnect-network
-
-  follow-up-service:
-    build:
-      context: ../follow-up-service
-      dockerfile: Dockerfile
-    container_name: follow-up-service-container
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://follow-up-service-db:5432/follow_up_database
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: password
-      SPRING_APPLICATION_JSON: '{
-        "spring.main.allow-circular-references": true,
-        "spring.jpa.show-sql": true,
-        "spring.jpa.hibernate.ddl-auto": "update",
-        "spring.jpa.open-in-view": true,
-        "spring.servlet.multipart.enabled": true
-      }'
-    ports:
-      - "8002:8002"
-      - "6567:6565" # Exponer el puerto gRPC
-    depends_on:
-      follow-up-service-db:
+      communication-service-db:
         condition: service_healthy
     networks:
       - lawconnect-network
@@ -123,10 +103,186 @@ services:
         "spring.servlet.multipart.enabled": true
       }'
     ports:
+      - "8002:8002"
+      - "6567:6565"
+    depends_on:
+      consultation-service-db:
+        condition: service_healthy
+    networks:
+      - lawconnect-network
+    restart: on-failure
+
+  feeing-service-db:
+    image: postgres:15
+    container_name: feeing-service-db-container
+    environment:
+      POSTGRES_DB: feeing_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d feeing_database"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - lawconnect-network
+
+  feeing-service:
+    build:
+      context: ../feeing-service
+      dockerfile: Dockerfile
+    container_name: feeing-service-container
+    environment:
+      AUTHORIZATION_JWT_SECRET: clave_secreta_para_firmar_jwt_tokens
+      AUTHORIZATION_JWT_EXPIRATION_DAYS: 7
+      SPRING_DATASOURCE_URL: jdbc:postgresql://feeing-service-db:5432/feeing_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_APPLICATION_JSON: '{
+        "spring.main.allow-circular-references": true,
+        "spring.jpa.show-sql": true,
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "spring.jpa.open-in-view": true,
+        "spring.servlet.multipart.enabled": true
+      }'
+    ports:
       - "8003:8003"
       - "6568:6565"
     depends_on:
-      consultation-service-db:
+      feeing-service-db:
+        condition: service_healthy
+    networks:
+      - lawconnect-network
+    restart: on-failure
+
+  follow-up-service-db:
+    image: postgres:15
+    container_name: follow-up-service-db-container
+    environment:
+      POSTGRES_DB: follow_up_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5436:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d follow_up_database"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - lawconnect-network
+
+  follow-up-service:
+    build:
+      context: ../follow-up-service
+      dockerfile: Dockerfile
+    container_name: follow-up-service-container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://follow-up-service-db:5432/follow_up_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_APPLICATION_JSON: '{
+        "spring.main.allow-circular-references": true,
+        "spring.jpa.show-sql": true,
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "spring.jpa.open-in-view": true,
+        "spring.servlet.multipart.enabled": true
+      }'
+    ports:
+      - "8004:8004"
+      - "6569:6565" # Exponer el puerto gRPC
+    depends_on:
+      follow-up-service-db:
+        condition: service_healthy
+    networks:
+      - lawconnect-network
+    restart: on-failure
+
+  iam-service-db:
+    image: postgres:15
+    container_name: iam-service-db-container
+    environment:
+      POSTGRES_DB: iam_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5437:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d iam_database"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - lawconnect-network
+
+  iam-service:
+    build:
+      context: ../iam-service
+      dockerfile: Dockerfile
+    container_name: iam-service-container
+    environment:
+      AUTHORIZATION_JWT_SECRET: clave_secreta_para_firmar_jwt_tokens
+      AUTHORIZATION_JWT_EXPIRATION_DAYS: 7
+      SPRING_DATASOURCE_URL: jdbc:postgresql://iam-service-db:5432/iam_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_APPLICATION_JSON: '{
+        "spring.main.allow-circular-references": true,
+        "spring.jpa.show-sql": true,
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "spring.jpa.open-in-view": true,
+        "spring.servlet.multipart.enabled": true
+      }'
+    ports:
+      - "8005:8005"
+      - "6570:6565"
+    depends_on:
+      iam-service-db:
+        condition: service_healthy
+    networks:
+      - lawconnect-network
+    restart: on-failure
+
+  legal-case-service-db:
+    image: postgres:15
+    container_name: legal-case-service-db-container
+    environment:
+      POSTGRES_DB: legal_case_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5438:5432" #
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d legal_case_database"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - lawconnect-network
+
+  legal-case-service:
+    build:
+      context: ../legal-case-service
+      dockerfile: Dockerfile
+    container_name: legal-case-service-container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://legal-case-service-db:5432/legal_case_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_APPLICATION_JSON: '{
+        "spring.main.allow-circular-references": true,
+        "spring.jpa.show-sql": true,
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "spring.jpa.open-in-view": true,
+        "spring.servlet.multipart.enabled": true
+      }'
+    ports:
+      - "8006:8006"
+      - "6571:6565"
+    depends_on:
+      legal-case-service-db:
         condition: service_healthy
     networks:
       - lawconnect-network
@@ -140,7 +296,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     ports:
-      - "5435:5432" #
+      - "5439:5432" #
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d profiles_database"]
       interval: 5s
@@ -166,8 +322,8 @@ services:
         "spring.servlet.multipart.enabled": true
       }'
     ports:
-      - "8004:8004"
-      - "6569:6565"
+      - "8007:8007"
+      - "6572:6565"
     depends_on:
       profiles-service-db:
         condition: service_healthy
@@ -186,11 +342,17 @@ services:
     networks:
       - lawconnect-network
     depends_on:
-      iam-service:
+      communication-service:
+        condition: service_started
+      consultation-service:
+        condition: service_started
+      feeing-service:
         condition: service_started
       follow-up-service:
         condition: service_started
-      consultation-service:
+      iam-service:
+        condition: service_started
+      legal-case-service:
         condition: service_started
       profiles-service:
         condition: service_started
