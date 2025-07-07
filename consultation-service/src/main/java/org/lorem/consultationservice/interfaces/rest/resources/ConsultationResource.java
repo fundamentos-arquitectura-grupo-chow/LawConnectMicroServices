@@ -8,7 +8,6 @@ public record ConsultationResource(
         Long id,
         Long lawyerId,
         Long clientId,
-        //List<PaymentResource> payment,
         String description,
         String consultationType,
         String applicationStatus

@@ -14,7 +14,6 @@ public class ConsultationResourceFromEntityAssembler {
                 entity.getId(),
                 entity.getLawyerId(),
                 entity.getClientId(),
-               // paymentResource,
                 entity.getDescription(),
                 entity.getConsultationType().toString(),
                 entity.getApplicationStatus().toString()

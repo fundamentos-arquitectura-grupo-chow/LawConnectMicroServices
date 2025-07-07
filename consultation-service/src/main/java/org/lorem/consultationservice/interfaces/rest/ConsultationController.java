@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.lorem.consultationservice.domain.model.queries.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.lorem.consultationservice.application.internal.outboundServices.ExternalPaymentConsultationServices;
 import org.lorem.consultationservice.domain.model.commands.ApproveConsultationCommand;
 import org.lorem.consultationservice.domain.model.commands.CreatePaymentByConsultationIdCommand;
 import org.lorem.consultationservice.domain.model.commands.DeleteConsultationCommand;
@@ -28,16 +27,13 @@ public class ConsultationController {
 
     private final ConsultationCommandService consultationCommandService;
     private final ConsultationQueryService consultationQueryService;
-    //private final ExternalPaymentConsultationServices externalPaymentConsultationServices;
 
     public ConsultationController(
             ConsultationCommandService consultationCommandService,
             ConsultationQueryService consultationQueryService
-            //,   ExternalPaymentConsultationServices externalPaymentConsultationServices
     ) {
         this.consultationCommandService = consultationCommandService;
         this.consultationQueryService = consultationQueryService;
-        //this.externalPaymentConsultationServices = externalPaymentConsultationServices;
     }
 
     @PostMapping
@@ -51,12 +47,7 @@ public class ConsultationController {
 
         if (consultation.isEmpty()) return ResponseEntity.badRequest().build();
 
-        // Obtener pagos usando el servicio externo
-        //var payments = externalPaymentConsultationServices.getPaymentsByConsultationId(consultationId);
-        //var paymentsResource = externalPaymentConsultationServices.createPaymentListResource(payments);
-
         var consultationResource = ConsultationResourceFromEntityAssembler.toResourceFromEntity(consultation.get()
-        //        , paymentsResource
         );
         return new ResponseEntity<>(consultationResource, HttpStatus.CREATED);
     }
@@ -64,9 +55,6 @@ public class ConsultationController {
     @GetMapping
     public ResponseEntity<List<ConsultationResource>> getAllConsultations() {
         var consultations = consultationQueryService.handle(new GetAllConsultationsQuery());
-
-        //if (consultations.isEmpty()) return ResponseEntity.noContent().build();
-
 
         var consultationResources = consultations.stream()
                 .map(ConsultationResourceFromEntityAssembler::toResourceFromEntity)
@@ -82,12 +70,7 @@ public class ConsultationController {
 
         if (consultation.isEmpty()) return ResponseEntity.notFound().build();
 
-        // Obtener pagos usando el servicio externo
-        //var payments = externalPaymentConsultationServices.getPaymentsByConsultationId(consultationId);
-        //var paymentsResource = externalPaymentConsultationServices.createPaymentListResource(payments);
-
         var consultationResource = ConsultationResourceFromEntityAssembler.toResourceFromEntity(consultation.get()
-                //, paymentsResource
         );
         return ResponseEntity.ok(consultationResource);
     }
@@ -96,16 +79,6 @@ public class ConsultationController {
     public ResponseEntity<List<ConsultationResource>> getAllConsultationsByLawyerId(@PathVariable Long lawyerId) {
         var consultations = consultationQueryService.handle(new GetAllConsultationsByLawyerIdQuery(lawyerId));
 
-        /*var consultationResources = consultations.stream()
-                .map(consultation -> {
-                    var payments = externalPaymentConsultationServices.getPaymentsByConsultationId(consultation.getId());
-                    var paymentsResource = externalPaymentConsultationServices.createPaymentListResource(payments);
-                    return ConsultationResourceFromEntityAssembler.toResourceFromEntity(consultation, paymentsResource);
-                })
-                .collect(Collectors.toList());*/
-        //var payments = externalPaymentConsultationServices.getPaymentsByConsultationId(consultation.getId());
-        //var paymentsResource = externalPaymentConsultationServices.createPaymentListResource(payments);
-        //, paymentsResource
         var consultationResources = consultations.stream()
                 .map(ConsultationResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
@@ -117,16 +90,6 @@ public class ConsultationController {
     public ResponseEntity<List<ConsultationResource>> getAllConsultationsByClientId(@PathVariable Long clientId) {
         var consultations = consultationQueryService.handle(new GetAllConsultationsByClientIdQuery(clientId));
 
-        /*var consultationResources = consultations.stream()
-                .map(consultation -> {
-                    var payments = externalPaymentConsultationServices.getPaymentsByConsultationId(consultation.getId());
-                    var paymentsResource = externalPaymentConsultationServices.createPaymentListResource(payments);
-                    return ConsultationResourceFromEntityAssembler.toResourceFromEntity(consultation, paymentsResource);
-                })
-                .collect(Collectors.toList());*/
-        //var payments = externalPaymentConsultationServices.getPaymentsByConsultationId(consultation.getId());
-        //var paymentsResource = externalPaymentConsultationServices.createPaymentListResource(payments);
-        //, paymentsResource
         var consultationResources = consultations.stream()
                 .map(ConsultationResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
@@ -138,13 +101,6 @@ public class ConsultationController {
     public ResponseEntity<List<ConsultationResource>> getAllConsultationsByLawyerIdAndClientId(@PathVariable Long clientId, @PathVariable Long lawyerId) {
         var consultations = consultationQueryService.handle(new GetAllConsultationsByClientIdAndLawyerIdQuery(clientId, lawyerId));
 
-        /*var consultationResources = consultations.stream()
-                .map(consultation -> {
-                    var payments = externalPaymentConsultationServices.getPaymentsByConsultationId(consultation.getId());
-                    var paymentsResource = externalPaymentConsultationServices.createPaymentListResource(payments);
-                    return ConsultationResourceFromEntityAssembler.toResourceFromEntity(consultation, paymentsResource);
-                })
-                .collect(Collectors.toList());*/
         var consultationResources = consultations.stream()
                 .map(ConsultationResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
