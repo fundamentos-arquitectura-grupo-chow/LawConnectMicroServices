@@ -362,6 +362,19 @@ services:
       profiles-service:
         condition: service_started
 
+  frontend:
+    build:
+      context: ../LawConnectFrontEnd
+      dockerfile: Dockerfile
+    container_name: frontend-container
+    ports:
+      - "4200:80"
+    networks:
+      - lawconnect-network
+    depends_on:
+      - api-gateway
+    restart: on-failure
+
 networks:
   lawconnect-network:
     driver: bridge
