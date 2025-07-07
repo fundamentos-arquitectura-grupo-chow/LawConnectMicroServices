@@ -45,13 +45,15 @@ public class WebSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(configurer -> configurer.configurationSource(_configurer -> {
+        /*http.cors(configurer -> configurer.configurationSource(_configurer -> {
             var cors = new CorsConfiguration();
             cors.setAllowedOrigins(List.of("*"));
             cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
             cors.setAllowedHeaders(List.of("*"));
+            cors.addAllowedOrigin("http://localhost:4200");
             return cors;
-        }));
+        }));*/
+        http.cors(cors -> {});
 
         http.csrf(configurer -> configurer.disable())
 

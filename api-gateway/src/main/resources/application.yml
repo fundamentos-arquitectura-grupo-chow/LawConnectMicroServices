@@ -48,7 +48,7 @@ spring:
         - id: profiles-service-route
           uri: http://profiles-service:8007
           predicates:
-            - Path=/api/v1/profiles/**
+            - Path=/api/v1/profiles/**,/api/v1/lawyers/**,/api/v1/clients/**
           filters:
             - JwtValidation
 
