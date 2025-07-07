@@ -55,3 +55,7 @@ spring:
 iam:
   service:
     url: http://iam-service:8005
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
