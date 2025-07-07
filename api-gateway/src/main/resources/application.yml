@@ -34,8 +34,9 @@ spring:
         - id: feeing-service-route
           uri: http://feeing-service:8005
           predicates:
-            - Path=/api/v1/feeing/**
+            - Path=/api/v1/feeing/**,/api/v1/payments/**
           filters:
+            - JwtValidation
 
 
 iam:

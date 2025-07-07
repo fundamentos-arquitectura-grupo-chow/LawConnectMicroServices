@@ -3,6 +3,10 @@ package org.lorem.feeingservice.interfaces.rest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.lorem.feeingservice.domain.model.queries.GetAllPaymentsByConsultationIdQuery;
+import org.lorem.feeingservice.domain.model.queries.GetAllPaymentsQuery;
+import org.lorem.feeingservice.interfaces.rest.resources.CreatePaymentResource;
+import org.lorem.feeingservice.interfaces.rest.transform.CreatePaymentCommandFromResourceAssembler;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.lorem.feeingservice.domain.model.queries.GetAllPaymentByClientIdQuery;
@@ -20,7 +24,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/v1/api/payments",produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/payments",produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Payment", description = "Project Payments Management Endpoints")
 public class PaymentController {
     private final PaymentCommandService paymentCommandService;
@@ -68,6 +72,29 @@ public class PaymentController {
         }
         var paymentResource = PaymentResourceFromEntityAssembler.toResourceFromEntity(payment.get());
         return ResponseEntity.ok(paymentResource);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PaymentResource>> getAllPayments() {
+        var payments = paymentQueryService.handle(new GetAllPaymentsQuery());
+        var paymentResources = payments.stream()
+                .map(PaymentResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(paymentResources);
+    }
+
+    @PostMapping
+    public ResponseEntity<PaymentResource> createPayment(@RequestBody CreatePaymentResource resource) {
+        try {
+            var createPaymentCommand = CreatePaymentCommandFromResourceAssembler.toCommandFromResource(resource);
+            var payment = paymentCommandService.handle(createPaymentCommand);
+            if (payment.isEmpty()) return ResponseEntity.badRequest().build();
+            var paymentResource = PaymentResourceFromEntityAssembler.toResourceFromEntity(payment.get());
+            return new ResponseEntity<>(paymentResource, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            // Manejar el caso de consulta no encontrada
+            return ResponseEntity.badRequest().body(new PaymentResource(null, null, e.getMessage(), null, null));
+        }
     }
 
     @Operation(summary = "Get Payments By Client Id")

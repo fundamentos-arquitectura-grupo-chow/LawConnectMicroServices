@@ -1,3 +1,4 @@
+/*
 package org.lorem.followupservice.interfaces.grpc;
 
 import followup.*;
@@ -65,4 +66,4 @@ public class FollowUpGrpcServer extends FollowUpServiceGrpc.FollowUpServiceImplB
         responseObserver.onNext(responseBuilder.build());
         responseObserver.onCompleted();
     }
-}
+}*/

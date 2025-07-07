@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package feeing;
+
+service FeeingService {
+  rpc GetPaymentById (GetPaymentByIdRequest) returns (PaymentResponse);
+  rpc GetPaymentsByClientId (GetPaymentsByClientIdRequest) returns (PaymentsListResponse);
+  rpc GetPaymentsByConsultationId (GetPaymentsByConsultationIdRequest) returns (PaymentsListResponse);
+  rpc CreatePayment (CreatePaymentRequest) returns (PaymentResponse);
+  rpc CompletePayment (CompletePaymentRequest) returns (PaymentResponse);
+}
+
+message GetPaymentByIdRequest {
+  int64 payment_id = 1;
+}
+
+message GetPaymentsByClientIdRequest {
+  int64 client_id = 1;
+}
+
+message GetPaymentsByConsultationIdRequest {
+  int64 consultation_id = 1;
+}
+
+message CreatePaymentRequest {
+  int64 consultation_id = 1;
+  int64 client_id = 2;
+  double amount = 3;
+  int32 currency = 4;
+}
+
+message CompletePaymentRequest {
+  int64 payment_id = 1;
+  string card_number = 2;
+  string expiration_date = 3;
+  string cvv = 4;
+}
+
+message PaymentResponse {
+  int64 id = 1;
+  int64 client_id = 2;
+  string amount = 3;
+  PaymentStatus status = 4;
+  int64 consultation_id = 5;
+}
+
+message PaymentsListResponse {
+  repeated PaymentResponse payments = 1;
+}
+
+message EmptyResponse {}
+
+enum PaymentStatus {
+  PENDIENTE = 0;
+  COMPLETADO = 1;
+}

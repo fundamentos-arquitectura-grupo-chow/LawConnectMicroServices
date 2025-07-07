@@ -1,3 +1,4 @@
+/*
 package org.lorem.followupservice.infrastructure.grpc;
 
 import consultation.ConsultationServiceGrpc;
@@ -36,4 +37,4 @@ public class ConsultationGrpcClient {
                 response.getClientId()
         );
     }
-}
+}*/

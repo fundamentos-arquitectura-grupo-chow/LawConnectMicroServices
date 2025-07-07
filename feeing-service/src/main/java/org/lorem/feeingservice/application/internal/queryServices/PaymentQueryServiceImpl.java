@@ -1,6 +1,7 @@
 package org.lorem.feeingservice.application.internal.queryServices;
 
 import org.lorem.feeingservice.domain.model.queries.GetAllPaymentsByConsultationIdQuery;
+import org.lorem.feeingservice.domain.model.queries.GetAllPaymentsQuery;
 import org.springframework.stereotype.Service;
 import org.lorem.feeingservice.domain.model.aggregates.Payment;
 import org.lorem.feeingservice.domain.model.queries.GetAllPaymentByClientIdQuery;
@@ -32,5 +33,10 @@ public class PaymentQueryServiceImpl implements PaymentQueryService {
     @Override
     public Optional<Payment> handle(GetPaymentByIdQuery query) {
         return paymentRepository.findById(query.paymentId());
+    }
+
+    @Override
+    public List<Payment> handle(GetAllPaymentsQuery query) {
+        return paymentRepository.findAll();
     }
 }

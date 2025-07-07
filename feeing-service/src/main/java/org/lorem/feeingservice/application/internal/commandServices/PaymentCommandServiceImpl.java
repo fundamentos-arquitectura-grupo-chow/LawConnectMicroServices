@@ -1,5 +1,6 @@
 package org.lorem.feeingservice.application.internal.commandServices;
 
+import io.grpc.StatusRuntimeException;
 import org.lorem.feeingservice.infrastructure.grpc.ConsultationGrpcClient;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -31,16 +32,36 @@ public class PaymentCommandServiceImpl implements PaymentCommandService {
 
     @Override
     public Optional<Payment> handle(CreatePaymentCommand command) {
-        //var consultationOptional = externalConsultationPaymentService.getConsultationId(command.consultationId());
-        var consultationId = consultationGrpcClient.getConsultationId(command.consultationId());
-        /*if (consultationOptional == 0) {
-            return Optional.empty();
-        }*/
-        //ConsultationDto consultationDto = ConsultationDto.fromConsultation(consultationOptional.get());
-        var payment = new Payment(command, consultationId);
-        System.out.println("Payment created");
-        paymentRepository.save(payment);
-        return Optional.of(payment);
+        try {
+            //var consultationOptional = externalConsultationPaymentService.getConsultationId(command.consultationId());
+            var consultationId = consultationGrpcClient.getConsultationId(command.consultationId());
+            if (consultationId == 0) {
+                throw new IllegalArgumentException("La consulta con ID " + command.consultationId() + " no existe");
+            }
+            //ConsultationDto consultationDto = ConsultationDto.fromConsultation(consultationOptional.get());
+            var payment = new Payment(command, consultationId);
+            System.out.println("Payment created");
+            paymentRepository.save(payment);
+            return Optional.of(payment);
+        } catch (io.grpc.StatusRuntimeException e) {
+            // Manejo específico para errores gRPC
+            switch (e.getStatus().getCode()) {
+                case NOT_FOUND:
+                    // La consulta no se encontró
+                    throw new IllegalArgumentException("Consulta no encontrada: " + command.consultationId(), e);
+                case UNAVAILABLE:
+                    // El servicio de consultas no está disponible
+                    throw new RuntimeException("Servicio de consultas no disponible. Intente más tarde", e);
+                default:
+                    // Otros errores gRPC
+                    throw new RuntimeException("Error en la comunicación con el servicio de consultas: " +
+                            e.getStatus().getDescription(), e);
+            }
+        } catch (Exception e) {
+            // Para otros errores no relacionados con gRPC
+            throw new RuntimeException("Error al crear el pago: " + e.getMessage(), e);
+        }
+
     }
 
     @Override

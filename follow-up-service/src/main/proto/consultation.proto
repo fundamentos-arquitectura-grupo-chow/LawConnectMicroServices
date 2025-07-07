@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package consultation;
+
+service ConsultationService {
+  rpc GetConsultationId (GetConsultationIdRequest) returns (ConsultationIdResponse);
+  rpc GetConsultationByPaymentId (GetConsultationByPaymentIdRequest) returns (ConsultationResponse);
+  rpc ChangeConsultationStatus (ChangeConsultationStatusRequest) returns (EmptyResponse);
+}
+
+message GetConsultationIdRequest {
+  int64 consultationId = 1;
+}
+
+message ConsultationIdResponse {
+  int64 consultationId = 1;
+}
+
+message GetConsultationByPaymentIdRequest {
+  int64 payment_id = 1;
+}
+
+message ChangeConsultationStatusRequest {
+  int64 consultation_id = 1;
+}
+
+message ConsultationResponse {
+  int64 id = 1;
+  int64 lawyer_id = 2;
+  int64 client_id = 3;
+  string description = 4;
+  string consultation_type = 5;
+  string application_status = 6;
+}
+
+message EmptyResponse {}

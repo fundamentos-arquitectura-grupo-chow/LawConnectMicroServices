@@ -1,3 +1,4 @@
+/*
 package org.lorem.followupservice.infrastructure.grpc;
 
 import consultation.ConsultationServiceGrpc;
@@ -47,4 +48,4 @@ public class GrpcConfig {
             ProfileServiceGrpc.ProfileServiceBlockingStub profileServiceBlockingStub) {
         return new ProfileGrpcClient(profileServiceBlockingStub);
     }
-}
+}*/

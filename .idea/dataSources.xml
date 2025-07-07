@@ -27,11 +27,11 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="consultation-service-db" uuid="bc15e44e-bb79-4197-a746-007cbd12b987">
+    <data-source source="LOCAL" name="consultation_database@localhost" uuid="cf562bca-29b0-4e15-8d9f-4a294c58a0b0">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5003/db</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5434/consultation_database</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

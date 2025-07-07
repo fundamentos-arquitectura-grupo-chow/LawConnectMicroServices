@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/consultation-service/consultation-service.iml" filepath="$PROJECT_DIR$/consultation-service/consultation-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/feeing-service/feeing-service.iml" filepath="$PROJECT_DIR$/feeing-service/feeing-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/follow-up-service/follow-up-service.iml" filepath="$PROJECT_DIR$/follow-up-service/follow-up-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/iam-service/iam-service.iml" filepath="$PROJECT_DIR$/iam-service/iam-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/lawconnect.iml" filepath="$PROJECT_DIR$/lawconnect.iml" />
       <module fileurl="file://$PROJECT_DIR$/profiles-service/profiles-service.iml" filepath="$PROJECT_DIR$/profiles-service/profiles-service.iml" />
