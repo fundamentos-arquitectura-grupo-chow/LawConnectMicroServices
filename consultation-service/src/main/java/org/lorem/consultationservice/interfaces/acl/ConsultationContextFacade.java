@@ -3,17 +3,14 @@ package org.lorem.consultationservice.interfaces.acl;
 import org.springframework.stereotype.Service;
 //import org.lorem.consultationservice.application.internal.outboundServices.ExternalPaymentConsultationServices;
 import org.lorem.consultationservice.domain.model.aggregates.Consultation;
-import org.lorem.consultationservice.domain.model.commands.ChangeConsultationStatusCommand;
-import org.lorem.consultationservice.domain.model.queries.GetAllPaymentsByConsultationIdQuery;
+import org.lorem.consultationservice.domain.model.commands.CompletePaymentByIdCommand;
 import org.lorem.consultationservice.domain.model.queries.GetConsultationByIdQuery;
 import org.lorem.consultationservice.domain.model.queries.GetConsultationByPaymentIdQuery;
 import org.lorem.consultationservice.domain.services.ConsultationCommandService;
 import org.lorem.consultationservice.domain.services.ConsultationQueryService;
 import org.lorem.consultationservice.interfaces.rest.resources.ConsultationResource;
-import org.lorem.consultationservice.interfaces.rest.transform.ConsultationResourceFromEntityAssembler;
 //import org.lorem.profilesservice.feeing.domain.model.aggregates.Payment;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,7 +32,7 @@ public class ConsultationContextFacade {
     }
 
     public void changeConsultationStatus(Long consultationId){
-        consultationCommandService.handle(new ChangeConsultationStatusCommand(consultationId));
+        consultationCommandService.handle(new CompletePaymentByIdCommand(consultationId));
     }
 
     public Optional<Consultation> getConsultationByPaymentId(Long paymentId){

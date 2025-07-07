@@ -1,10 +1,10 @@
 package org.lorem.consultationservice.application.internal.commandservices;
 
 import org.lorem.consultationservice.infrastructure.kafka.CommunicationKafkaProducer;
+import org.lorem.consultationservice.infrastructure.kafka.FeeingKafkaProducer;
 import org.lorem.consultationservice.infrastructure.kafka.FollowUpKafkaProducer;
-import org.springframework.context.annotation.Lazy;
+import org.lorem.consultationservice.infrastructure.kafka.LegalCaseKafkaProducer;
 import org.springframework.stereotype.Service;
-import org.lorem.consultationservice.application.internal.outboundServices.*;
 import org.lorem.consultationservice.domain.model.aggregates.Consultation;
 import org.lorem.consultationservice.domain.model.commands.*;
 import org.lorem.consultationservice.domain.services.ConsultationCommandService;
@@ -15,11 +15,15 @@ public class ConsultationCommandServiceImpl implements ConsultationCommandServic
     private final ConsultationRepository consultationRepository;
     private final CommunicationKafkaProducer communicationKafkaProducer;
     private final FollowUpKafkaProducer followUpKafkaProducer;
+    private final FeeingKafkaProducer feeingKafkaProducer;
+    private final LegalCaseKafkaProducer legalCaseKafkaProducer;
 
-    public ConsultationCommandServiceImpl(ConsultationRepository consultationRepository, CommunicationKafkaProducer communicationKafkaProducer, FollowUpKafkaProducer followUpKafkaProducer) {
+    public ConsultationCommandServiceImpl(ConsultationRepository consultationRepository, CommunicationKafkaProducer communicationKafkaProducer, FollowUpKafkaProducer followUpKafkaProducer, FeeingKafkaProducer feeingKafkaProducer, LegalCaseKafkaProducer legalCaseKafkaProducer) {
         this.consultationRepository = consultationRepository;
         this.communicationKafkaProducer = communicationKafkaProducer;
         this.followUpKafkaProducer = followUpKafkaProducer;
+        this.feeingKafkaProducer = feeingKafkaProducer;
+        this.legalCaseKafkaProducer = legalCaseKafkaProducer;
     }
 
     @Override
@@ -34,6 +38,9 @@ public class ConsultationCommandServiceImpl implements ConsultationCommandServic
         }
 
         communicationKafkaProducer.createChatRoom(consultation.getId());
+        legalCaseKafkaProducer.sendLegalCaseCreatedMessage(
+                command.title(),command.description(), consultation.getId()
+        );
 
         followUpKafkaProducer.createNotification(
                 "Consulta Creada",
@@ -57,23 +64,29 @@ public class ConsultationCommandServiceImpl implements ConsultationCommandServic
         }
     }
 
-    //Cambia estado de payment a pagado y crea notificación
     @Override
-    public void handle(ChangeConsultationStatusCommand command) {
-        /*var consultation = consultationRepository.findById(command.id());
+    public void handle(CompletePaymentByIdCommand command) {
+        var consultation = consultationRepository.findById(command.consultationId());
         if (consultation.isEmpty()) {
             throw new IllegalArgumentException("Consultation does not exist");
         }
         try {
-            externalFollowUpConsultationService.createNotification(
+            feeingKafkaProducer.sendPaymentCompletedMessage(
+                    command.paymentId(),
+                    command.cardNumber(),
+                    command.expirationDate(),
+                    command.cvv()
+            );
+
+            followUpKafkaProducer.createNotification(
                     "Pago Aceptado",
                     "Ahora la consulta se encuentra pagada",
                     consultation.get().getClientId(),
-                    command.id()
+                    command.consultationId()
             );
         } catch (Exception e) {
             throw new IllegalArgumentException("Error while changing consultation status: " + e.getMessage());
-        }*/
+        }
     }
 
     @Override
@@ -83,13 +96,12 @@ public class ConsultationCommandServiceImpl implements ConsultationCommandServic
             throw new IllegalArgumentException("Consultation does not exist");
         }
         try {
-            /*var lawyer = externalProfileConsultationService.getLawyerById(consultation.get().getLawyerId());
-            externalFollowUpConsultationService.createNotification(
-                    "Consulta Aceptada con " + lawyer.get().getProfile().getName().getFullName(),
+            followUpKafkaProducer.createNotification(
+                    "Consulta Aceptada" ,
                     "La consulta ha sido aceptada sobre " + consultation.get().getDescription(),
                     consultation.get().getClientId(),
                     command.consultationId()
-            );*/
+            );
             consultation.get().setApplicationAccepted();
             consultationRepository.save(consultation.get());
         } catch (Exception e) {
@@ -104,16 +116,16 @@ public class ConsultationCommandServiceImpl implements ConsultationCommandServic
             throw new IllegalArgumentException("Consultation does not exist");
         }
         try {
-            /*externalFollowUpConsultationService.createNotification(
+            followUpKafkaProducer.createNotification(
                     "Consulta Rechazada",
                     "La consulta ha sido rechazada",
                     consultation.get().getClientId(),
                     command.consultationId()
-            );*/
+            );
             consultation.get().setApplicationDenied();
 
-            /*externalCommunicationConsultationService.deleteChatRoom(consultation.get().getId());
-            externalLegalCaseConsultationService.deleteLegalCaseById(consultation.get().getId());*/
+            communicationKafkaProducer.deleteChatRoom(consultation.get().getId());
+            legalCaseKafkaProducer.sendLegalCaseDeletedMessage(consultation.get().getId());
             consultationRepository.deleteById(consultation.get().getId());
         } catch (Exception e) {
             throw new IllegalArgumentException("Error while rejecting consultation: " + e.getMessage());
@@ -127,14 +139,12 @@ public class ConsultationCommandServiceImpl implements ConsultationCommandServic
             throw new IllegalArgumentException("Consultation does not exist");
         }
         try {
-            // Crear el pago - la relación se mantiene a través del consultationId
-            // que ya se establece al crear el payment
-            /*externalPaymentConsultationServices.createPayment(
+            feeingKafkaProducer.sendPaymentCreatedMessage(
                     consultation.get().getId(),
                     consultation.get().getClientId(),
                     command.amount(),
                     command.currency()
-            );*/
+            );
             System.out.println("Payment created");
             // No es necesario llamar a addPayment porque la asociación se hace
             // mediante el consultationId en el objeto Payment

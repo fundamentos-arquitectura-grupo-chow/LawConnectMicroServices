@@ -1,9 +1,6 @@
 package org.lorem.feeingservice.application.internal.commandServices;
 
-import org.lorem.feeingservice.domain.model.valueObjects.ConsultationDto;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.lorem.feeingservice.application.internal.outboundServices.ExternalConsultationPaymentService;
 import org.lorem.feeingservice.domain.model.aggregates.Payment;
 import org.lorem.feeingservice.domain.model.commands.CompletePaymentCommand;
 import org.lorem.feeingservice.domain.model.commands.CreatePaymentCommand;
@@ -18,23 +15,15 @@ import java.util.Optional;
 public class PaymentCommandServiceImpl implements PaymentCommandService {
 
     private final PaymentRepository paymentRepository;
-    private final ExternalConsultationPaymentService externalConsultationPaymentService;
 
-    public PaymentCommandServiceImpl(
-            PaymentRepository paymentRepository,
-            @Lazy ExternalConsultationPaymentService externalConsultationPaymentService1) {
+    public PaymentCommandServiceImpl(PaymentRepository paymentRepository) {
         this.paymentRepository = paymentRepository;
-        this.externalConsultationPaymentService = externalConsultationPaymentService1;
     }
+
 
     @Override
     public Optional<Payment> handle(CreatePaymentCommand command) {
-        var consultationOptional = externalConsultationPaymentService.getConsultationById(command.consultationId());
-        if (consultationOptional.isEmpty()) {
-            return Optional.empty();
-        }
-        ConsultationDto consultationDto = ConsultationDto.fromConsultation(consultationOptional.get());
-        var payment = new Payment(command, consultationDto);
+        var payment = new Payment(command);
         System.out.println("Payment created");
         paymentRepository.save(payment);
         return Optional.of(payment);
@@ -55,8 +44,6 @@ public class PaymentCommandServiceImpl implements PaymentCommandService {
         System.out.println("Payment updated");
         payment.get().setStatus(PaymentStatus.COMPLETADO);
         System.out.println("Payment updated");
-
-        payment.get().finishProject();
 
         paymentRepository.save(payment.get());
         return payment;

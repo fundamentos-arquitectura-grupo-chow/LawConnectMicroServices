@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.lorem.feeingservice.domain.model.commands.CompletePaymentCommand;
 import org.lorem.feeingservice.domain.model.commands.CreatePaymentCommand;
-import org.lorem.feeingservice.domain.model.events.PaymentCompletedEvent;
 import org.lorem.feeingservice.domain.model.valueObjects.*;
 import org.lorem.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 
@@ -14,7 +13,7 @@ import org.lorem.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 public class Payment extends AuditableAbstractAggregateRoot<Payment> {
 
     @JoinColumn(name = "consultation_id")
-    private Long consultation;
+    private Long consultationId;
 
     private Long clientId;
 
@@ -28,7 +27,7 @@ public class Payment extends AuditableAbstractAggregateRoot<Payment> {
     @Embedded
     private Card card;
 
-    public Payment(CreatePaymentCommand command, ConsultationDto consultationDto) {
+    public Payment(CreatePaymentCommand command) {
         this();
         this.amount = new PaymentAmount(
                 command.amount(),
@@ -37,7 +36,7 @@ public class Payment extends AuditableAbstractAggregateRoot<Payment> {
         this.clientId = command.clientId();
         this.status = PaymentStatus.PENDIENTE;
         this.card = new Card();
-        this.consultation = consultationDto.getId();
+        this.consultationId = command.consultationId();
     }
 
     public Payment() {
@@ -45,9 +44,5 @@ public class Payment extends AuditableAbstractAggregateRoot<Payment> {
 
     public void updateCard(CompletePaymentCommand command) {
         this.card = new Card(command.cardNumber(), command.expirationDate(), command.cvv());
-    }
-
-    public void finishProject() {
-        this.registerEvent(new PaymentCompletedEvent(this, this.getId()));
     }
 }

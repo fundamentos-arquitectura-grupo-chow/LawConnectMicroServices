@@ -1,5 +1,6 @@
 package org.lorem.feeingservice.interfaces.acl;
 
+import org.lorem.feeingservice.domain.model.commands.CompletePaymentCommand;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.lorem.feeingservice.domain.model.aggregates.Payment;
@@ -11,6 +12,7 @@ import org.lorem.feeingservice.domain.services.PaymentQueryService;
 import org.lorem.feeingservice.interfaces.rest.resources.PaymentResource;
 import org.lorem.feeingservice.interfaces.rest.transform.PaymentResourceFromEntityAssembler;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,4 +55,15 @@ public class PaymentContextFacade {
         return Optional.of(paymentsResources).orElseThrow();
     }
 
+    public void CompletePayment(
+            Long paymentId,
+            String cardNumber,
+            LocalDate expiryDate,
+            String cvv
+    ){
+        var payment = paymentCommandService.handle(new CompletePaymentCommand(paymentId, cardNumber,expiryDate, cvv));
+        if (payment.isEmpty()) {
+            throw new IllegalArgumentException("Invalid payment details or payment not found");
+        }
+    }
 }

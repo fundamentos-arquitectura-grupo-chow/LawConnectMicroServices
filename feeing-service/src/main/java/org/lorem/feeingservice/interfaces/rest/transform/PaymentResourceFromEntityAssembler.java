@@ -10,7 +10,7 @@ public class PaymentResourceFromEntityAssembler {
                 entity.getClientId(),
                 entity.getAmount().paymentAmountToString(),
                 entity.getStatus(),
-                entity.getConsultation()
+                entity.getConsultationId()
         );
     }
 }
