@@ -1,12 +1,13 @@
 package org.lorem.legalcaseservice.domain.model.entities;
 
+import jakarta.persistence.*;
 import org.lorem.legalcaseservice.domain.model.aggregates.LegalCase;
 import org.lorem.legalcaseservice.domain.model.commands.AddDocumentByLegalCaseIdCommand;
 import org.lorem.legalcaseservice.domain.model.valueobjects.DocumentType;
 import org.lorem.legalcaseservice.domain.model.valueobjects.DocumentsStatus;
-import com.loremipsum.lawconnectplatform.shared.domain.model.entities.AuditableModel;
 import lombok.Getter;
 import lombok.Setter;
+import org.lorem.shared.domain.model.entities.AuditableModel;
 
 @Setter
 @Getter
