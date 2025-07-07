@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface LegalCaseRepository extends JpaRepository<LegalCase, Long> {
-    Optional<LegalCase> findByConsultation(Long consultation);
+    Optional<LegalCase> findAllByConsultationId(Long consultationId);
 }

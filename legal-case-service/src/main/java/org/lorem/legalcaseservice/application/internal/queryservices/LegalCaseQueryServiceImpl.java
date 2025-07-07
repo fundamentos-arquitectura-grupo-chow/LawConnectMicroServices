@@ -37,6 +37,6 @@ public class LegalCaseQueryServiceImpl implements LegalCaseQueryService {
     public Optional<LegalCase> handle(GetLegalCaseByConsultationIdQuery query) {
         var consultationId = query.consultationId();
         var clientId = consultationGrpcClient.getClientIdByConsultationId(consultationId);
-        return legalCaseRepository.findByConsultation(clientId);
+        return legalCaseRepository.findAllByConsultationId(clientId);
     }
 }
