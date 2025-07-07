@@ -1,4 +1,4 @@
-package org.lorem.feeingservice.internal.outboundServices;
+package org.lorem.feeingservice.application.internal.outboundServices;
 
 import org.lorem.feeingservice.domain.model.valueObjects.ConsultationDto;
 import org.lorem.feeingservice.infrastructure.grpc.ConsultationGrpcClient;

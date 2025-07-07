@@ -7,7 +7,7 @@ public class VideoCallResourceFromEntityAssembler {
     public static VideoCallResource toResourceFromEntity(VideoCall entity){
         return new VideoCallResource(
                 entity.getId(),
-                entity.getConsultation(),
+                entity.getConsultationId(),
                 entity.getDescription(),
                 entity.getStatus().toString()
         );

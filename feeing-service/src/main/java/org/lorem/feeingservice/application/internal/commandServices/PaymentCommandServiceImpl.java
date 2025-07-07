@@ -1,9 +1,9 @@
-package org.lorem.feeingservice.internal.commandServices;
+package org.lorem.feeingservice.application.internal.commandServices;
 
 import org.lorem.feeingservice.domain.model.valueObjects.ConsultationDto;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.lorem.feeingservice.internal.outboundServices.ExternalConsultationPaymentService;
+import org.lorem.feeingservice.application.internal.outboundServices.ExternalConsultationPaymentService;
 import org.lorem.feeingservice.domain.model.aggregates.Payment;
 import org.lorem.feeingservice.domain.model.commands.CompletePaymentCommand;
 import org.lorem.feeingservice.domain.model.commands.CreatePaymentCommand;

@@ -1,7 +1,6 @@
 package org.lorem.communicationservice.application.internal.queryservices;
 
 import org.springframework.stereotype.Service;
-import org.lorem.communicationservice.application.internal.outboundServices.ExternalConsultationCommunicationService;
 import org.lorem.communicationservice.domain.model.aggregates.VideoCall;
 import org.lorem.communicationservice.domain.model.queries.GetAllVideoCallsByConsultationId;
 import org.lorem.communicationservice.domain.services.VideoCallQueryService;
@@ -12,17 +11,14 @@ import java.util.List;
 @Service
 public class VideoCallQueryServiceImpl implements VideoCallQueryService {
 
-    private final ExternalConsultationCommunicationService externalConsultationCommunicationService;
     private final VideoCallRepository videoCallRepository;
 
-    public VideoCallQueryServiceImpl(ExternalConsultationCommunicationService externalConsultationCommunicationService, VideoCallRepository videoCallRepository) {
-        this.externalConsultationCommunicationService = externalConsultationCommunicationService;
+    public VideoCallQueryServiceImpl(VideoCallRepository videoCallRepository) {
         this.videoCallRepository = videoCallRepository;
     }
 
     @Override
     public List<VideoCall> handle(GetAllVideoCallsByConsultationId query) {
-        var consultation = externalConsultationCommunicationService.getConsultationById(query.consultationId());
-        return videoCallRepository.findAllByConsultation(consultation.get());
+        return videoCallRepository.findAllByConsultationId(query.consultationId());
     }
 }

@@ -2,24 +2,21 @@ package org.lorem.consultationservice.application.internal.eventHandlers;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-//import org.lorem.consultationservice.application.internal.outboundServices.ExternalCommunicationConsultationService;
 import org.lorem.consultationservice.domain.model.events.CreateChatRoomEvent;
+import org.lorem.consultationservice.infrastructure.kafka.CommunicationKafkaProducer;
 
 @Service
 public class CreateChatRoomEventHandler {
 
-    /*private final ExternalCommunicationConsultationService externalCommunicationConsultationService;
+    private final CommunicationKafkaProducer communicationKafkaProducer;
 
-    public CreateChatRoomEventHandler(ExternalCommunicationConsultationService externalCommunicationConsultationService) {
-        this.externalCommunicationConsultationService = externalCommunicationConsultationService;
+    public CreateChatRoomEventHandler(CommunicationKafkaProducer communicationKafkaProducer) {
+        this.communicationKafkaProducer = communicationKafkaProducer;
     }
 
     @EventListener(CreateChatRoomEvent.class)
     public void onChatRoomCreated(CreateChatRoomEvent event) {
-        System.out.println("hola");
         System.out.println("Chat room created for consultation: " + event.getConsultationId());
-        externalCommunicationConsultationService.createChatRoom(
-                event.getConsultationId()
-            );
-    }*/
+        communicationKafkaProducer.createChatRoom(event.getConsultationId());
+    }
 }

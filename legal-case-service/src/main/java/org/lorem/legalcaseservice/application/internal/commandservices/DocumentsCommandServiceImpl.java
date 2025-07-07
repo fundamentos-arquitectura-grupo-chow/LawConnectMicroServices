@@ -1,11 +1,11 @@
 package org.lorem.legalcaseservice.application.internal.commandservices;
 
-import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalConsultationLegalCaseService;
-import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalFollowUpLegalCaseService;
 import org.lorem.legalcaseservice.domain.model.commands.AddDocumentByLegalCaseIdCommand;
 import org.lorem.legalcaseservice.domain.model.commands.ChangeDocumentStatusCommand;
 import org.lorem.legalcaseservice.domain.model.entities.DocumentsItem;
 import org.lorem.legalcaseservice.domain.services.DocumentsCommandService;
+import org.lorem.legalcaseservice.infrastructure.grpc.ConsultationGrpcClient;
+import org.lorem.legalcaseservice.infrastructure.grpc.FollowUpGrpcClient;
 import org.lorem.legalcaseservice.infrastructure.persistence.jpa.repositories.DocumentsRepository;
 import org.lorem.legalcaseservice.infrastructure.persistence.jpa.repositories.LegalCaseRepository;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,14 @@ public class DocumentsCommandServiceImpl implements DocumentsCommandService {
 
     private final DocumentsRepository documentsRepository;
     private final LegalCaseRepository legalCaseRepository;
-    private final ExternalFollowUpLegalCaseService externalFollowUpLegalCaseService;
+    private final FollowUpGrpcClient followUpGrpcClient;
+    private final ConsultationGrpcClient consultationGrpcClient;
 
-    public DocumentsCommandServiceImpl(DocumentsRepository documentsRepository, LegalCaseRepository legalCaseRepository, ExternalFollowUpLegalCaseService externalFollowUpLegalCaseService, ExternalConsultationLegalCaseService externalConsultationLegalCaseService) {
+    public DocumentsCommandServiceImpl(DocumentsRepository documentsRepository, LegalCaseRepository legalCaseRepository, FollowUpGrpcClient followUpGrpcClient, ConsultationGrpcClient consultationGrpcClient) {
         this.documentsRepository = documentsRepository;
         this.legalCaseRepository = legalCaseRepository;
-        this.externalFollowUpLegalCaseService = externalFollowUpLegalCaseService;
+        this.followUpGrpcClient = followUpGrpcClient;
+        this.consultationGrpcClient = consultationGrpcClient;
     }
 
     @Override
@@ -34,18 +36,17 @@ public class DocumentsCommandServiceImpl implements DocumentsCommandService {
 
         legalCase.get().getDocuments().addDocumentItem(document);
 
-        externalFollowUpLegalCaseService.createNotification(
+        followUpGrpcClient.createNotification(
                 "Document added to legal case",
                 "Document " + document.getTitle() +
                         "\n added to legal case " + document.getDescription() +
-                        "\n ype: " + document.getType() +
+                        "\n Type: " + document.getType() +
                         "\n Status: " + document.getStatus(),
-                        consultation.get().getClientId(),
-                        legalCase.get().getConsultationId()
+                consultationGrpcClient.getClientIdByConsultationId(legalCase.get().getConsultationId()),
+                legalCase.get().getConsultationId()
         );
 
         documentsRepository.save(document);
-
     }
 
     @Override
@@ -61,14 +62,12 @@ public class DocumentsCommandServiceImpl implements DocumentsCommandService {
             throw new IllegalArgumentException("Legal case not found");
         }
 
-        var consultation = externalConsultationLegalCaseService.getConsultationById(legalCase.get().getConsultationId().getId());
-
-        externalFollowUpLegalCaseService.createNotification(
+        followUpGrpcClient.createNotification(
                 "Document status changed",
                 "Document " + document.get().getTitle() +
                         "\n status changed to " + document.get().getStatus(),
-                        consultation.get().getClientId(),
-                        consultation.get().getId()
+                consultationGrpcClient.getClientIdByConsultationId(legalCase.get().getConsultationId()),
+                legalCase.get().getConsultationId()
         );
 
         documentsRepository.save(document.get());

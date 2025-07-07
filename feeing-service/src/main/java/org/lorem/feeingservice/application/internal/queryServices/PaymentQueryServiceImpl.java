@@ -1,4 +1,4 @@
-package org.lorem.feeingservice.internal.queryServices;
+package org.lorem.feeingservice.application.internal.queryServices;
 
 import org.lorem.feeingservice.domain.model.queries.GetAllPaymentsByConsultationIdQuery;
 import org.springframework.stereotype.Service;

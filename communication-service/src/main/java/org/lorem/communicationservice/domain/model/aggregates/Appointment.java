@@ -12,7 +12,7 @@ import org.lorem.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 public class Appointment extends AuditableAbstractAggregateRoot<Appointment> {
 
     @JoinColumn(name = "consultation_id", nullable = false)
-    private Long consultation;
+    private Long consultationId;
 
     private String description;
 
@@ -22,8 +22,8 @@ public class Appointment extends AuditableAbstractAggregateRoot<Appointment> {
     @Column(nullable = false)
     private CommunicationStatus status;
 
-    public Appointment(CreateAppointmentCommand command, Consultation consultation) {
-        this.consultation = consultation;
+    public Appointment(CreateAppointmentCommand command) {
+        this.consultationId = command.consultationId();
         this.description = command.description();
         this.location = command.location();
         this.status = CommunicationStatus.PENDING;

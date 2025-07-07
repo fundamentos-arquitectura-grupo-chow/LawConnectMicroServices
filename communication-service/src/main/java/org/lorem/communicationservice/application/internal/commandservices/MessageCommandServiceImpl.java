@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import org.lorem.communicationservice.domain.model.commands.AddMessageByChatRoomIdCommand;
 import org.lorem.communicationservice.domain.model.entities.MessageItem;
 import org.lorem.communicationservice.domain.services.MessageCommandService;
-import org.lorem.communicationservice.repositories.ChatRoomRepository;
-import org.lorem.communicationservice.repositories.MessageRepository;
+import org.lorem.communicationservice.infrastructure.persistence.jpa.repositories.ChatRoomRepository;
+import org.lorem.communicationservice.infrastructure.persistence.jpa.repositories.MessageRepository;
 
 @Service
 public class MessageCommandServiceImpl implements MessageCommandService {

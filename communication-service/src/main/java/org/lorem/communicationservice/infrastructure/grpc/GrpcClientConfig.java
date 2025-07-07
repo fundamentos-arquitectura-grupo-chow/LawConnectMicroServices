@@ -1,11 +1,11 @@
-package org.lorem.legalcaseservice.infrastructure.grpc;
+package org.lorem.communicationservice.infrastructure.grpc;
 
+import consultation.ConsultationServiceGrpc;
 import followup.FollowUpServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import consultation.ConsultationServiceGrpc;
 
 @Configuration
 public class GrpcClientConfig {

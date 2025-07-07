@@ -1,11 +1,11 @@
 package org.lorem.legalcaseservice.application.internal.queryservices;
 
-import org.lorem.legalcaseservice.application.internal.outboundServices.ExternalConsultationLegalCaseService;
 import org.lorem.legalcaseservice.domain.model.aggregates.LegalCase;
 import org.lorem.legalcaseservice.domain.model.queries.GetAllLegalCasesQuery;
 import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByConsultationIdQuery;
 import org.lorem.legalcaseservice.domain.model.queries.GetLegalCaseByIdQuery;
 import org.lorem.legalcaseservice.domain.services.LegalCaseQueryService;
+import org.lorem.legalcaseservice.infrastructure.grpc.ConsultationGrpcClient;
 import org.lorem.legalcaseservice.infrastructure.persistence.jpa.repositories.LegalCaseRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +16,11 @@ import java.util.Optional;
 public class LegalCaseQueryServiceImpl implements LegalCaseQueryService {
 
     private final LegalCaseRepository legalCaseRepository;
-    private final ExternalConsultationLegalCaseService externalConsultationLegalCaseService;
+    private final ConsultationGrpcClient consultationGrpcClient;
 
-    public LegalCaseQueryServiceImpl(LegalCaseRepository legalCaseRepository, ExternalConsultationLegalCaseService externalConsultationLegalCaseService) {
+    public LegalCaseQueryServiceImpl(LegalCaseRepository legalCaseRepository, ConsultationGrpcClient consultationGrpcClient) {
         this.legalCaseRepository = legalCaseRepository;
-        this.externalConsultationLegalCaseService = externalConsultationLegalCaseService;
+        this.consultationGrpcClient = consultationGrpcClient;
     }
 
     @Override
@@ -35,7 +35,8 @@ public class LegalCaseQueryServiceImpl implements LegalCaseQueryService {
 
     @Override
     public Optional<LegalCase> handle(GetLegalCaseByConsultationIdQuery query) {
-        var consultation = externalConsultationLegalCaseService.getConsultationById(query.consultationId());
-        return legalCaseRepository.findByConsultation(consultation.get());
+        var consultationId = query.consultationId();
+        var clientId = consultationGrpcClient.getClientIdByConsultationId(consultationId);
+        return legalCaseRepository.findByConsultation(clientId);
     }
 }

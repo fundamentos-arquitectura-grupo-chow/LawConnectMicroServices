@@ -11,7 +11,7 @@ import org.lorem.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 public class VideoCall extends AuditableAbstractAggregateRoot<VideoCall> {
 
     @JoinColumn(name = "consultation", nullable = false)
-    private Long consultation;
+    private Long consultationId;
 
     private String description;
 
@@ -19,10 +19,10 @@ public class VideoCall extends AuditableAbstractAggregateRoot<VideoCall> {
     @Column(nullable = false)
     private CommunicationStatus status;
 
-    public VideoCall(CreateVideoCallCommand command, Long consultation) {
+    public VideoCall(CreateVideoCallCommand command) {
         this.description = command.description();
         this.status = CommunicationStatus.PENDING;
-        this.consultation = consultation;
+        this.consultationId = command.consultationId();
     }
 
     public VideoCall() {

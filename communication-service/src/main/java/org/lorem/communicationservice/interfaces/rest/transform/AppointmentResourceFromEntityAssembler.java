@@ -8,7 +8,7 @@ public class AppointmentResourceFromEntityAssembler {
         return new AppointmentResource(
                 entity.getId(),
                 entity.getDescription(),
-                entity.getConsultation(),
+                entity.getConsultationId(),
                 entity.getLocation(),
                 entity.getStatus().toString()
         );

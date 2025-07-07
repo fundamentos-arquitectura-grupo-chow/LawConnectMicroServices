@@ -1,13 +1,12 @@
 package org.lorem.communicationservice.application.internal.commandservices;
 
+import org.lorem.communicationservice.infrastructure.grpc.ConsultationGrpcClient;
+import org.lorem.communicationservice.infrastructure.grpc.FollowUpGrpcClient;
 import org.springframework.stereotype.Service;
-import org.lorem.communicationservice.application.internal.outboundServices.ExternalConsultationCommunicationService;
-import org.lorem.communicationservice.application.internal.outboundServices.ExternalFollowUpCommunicationService;
-import org.lorem.communicationservice.internal.outboundServices.ExternalPaymentCommunicationService;
 import org.lorem.communicationservice.domain.model.aggregates.VideoCall;
 import org.lorem.communicationservice.domain.model.commands.CreateVideoCallCommand;
 import org.lorem.communicationservice.domain.services.VideoCallCommandService;
-import org.lorem.communicationservice.repositories.VideoCallRepository;
+import org.lorem.communicationservice.infrastructure.persistence.jpa.repositories.VideoCallRepository;
 
 import java.util.Optional;
 
@@ -15,32 +14,26 @@ import java.util.Optional;
 public class VideoCallCommandServiceImpl implements VideoCallCommandService {
 
     private final VideoCallRepository videoCallRepository;
-    private final ExternalConsultationCommunicationService externalConsultationCommunicationService;
-    private final ExternalFollowUpCommunicationService externalFollowUpCommunicationService;
+    private final FollowUpGrpcClient followUpGrpcClient;
+    private final ConsultationGrpcClient consultationGrpcClient;
 
-    public VideoCallCommandServiceImpl(VideoCallRepository videoCallRepository, ExternalConsultationCommunicationService externalConsultationCommunicationService, ExternalFollowUpCommunicationService externalFollowUpCommunicationService) {
+    public VideoCallCommandServiceImpl(VideoCallRepository videoCallRepository, FollowUpGrpcClient followUpGrpcClient, ConsultationGrpcClient consultationGrpcClient) {
         this.videoCallRepository = videoCallRepository;
-        this.externalConsultationCommunicationService = externalConsultationCommunicationService;
-        this.externalFollowUpCommunicationService = externalFollowUpCommunicationService;
+        this.followUpGrpcClient = followUpGrpcClient;
+        this.consultationGrpcClient = consultationGrpcClient;
     }
 
     @Override
     public Optional<VideoCall> handle(CreateVideoCallCommand command) {
 
-        var consultation = externalConsultationCommunicationService.getConsultationById(command.consultationId());
-
-        if (consultation.isEmpty()) {
-            throw new IllegalArgumentException("Consultation not found");
-        }
-
-
-        var VideoCall = new VideoCall(command, consultation.get());
+        var VideoCall = new VideoCall(command);
 
         videoCallRepository.save(VideoCall);
 
-        externalFollowUpCommunicationService.createNotification(
+        followUpGrpcClient.createNotification(
                 "Video Call created",
                 command.description(),
+                consultationGrpcClient.getClientIdByConsultationId(command.consultationId()),
                 command.consultationId()
         );
 

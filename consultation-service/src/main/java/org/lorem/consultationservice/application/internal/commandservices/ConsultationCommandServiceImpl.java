@@ -1,5 +1,7 @@
 package org.lorem.consultationservice.application.internal.commandservices;
 
+import org.lorem.consultationservice.infrastructure.kafka.CommunicationKafkaProducer;
+import org.lorem.consultationservice.infrastructure.kafka.FollowUpKafkaProducer;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.lorem.consultationservice.application.internal.outboundServices.*;
@@ -11,26 +13,13 @@ import org.lorem.consultationservice.infrastructure.persistence.jpa.repositories
 @Service
 public class ConsultationCommandServiceImpl implements ConsultationCommandService {
     private final ConsultationRepository consultationRepository;
-    //private final ExternalPaymentConsultationServices externalPaymentConsultationServices;
-    //private final ExternalProfileConsultationService externalProfileConsultationService;
-    //private final ExternalCommunicationConsultationService externalCommunicationConsultationService;
-    //private final ExternalLegalCaseConsultationService externalLegalCaseConsultationService;
-    //private final ExternalFollowUpConsultationService externalFollowUpConsultationService;
+    private final CommunicationKafkaProducer communicationKafkaProducer;
+    private final FollowUpKafkaProducer followUpKafkaProducer;
 
-    public ConsultationCommandServiceImpl(
-            ConsultationRepository consultationRepository
-            //@Lazy ExternalPaymentConsultationServices externalPaymentConsultationServices1,
-            //@Lazy ExternalProfileConsultationService externalProfileConsultationService1,
-            //@Lazy ExternalCommunicationConsultationService externalCommunicationConsultationService,
-            //@Lazy ExternalLegalCaseConsultationService externalLegalCaseConsultationService,
-            //@Lazy ExternalFollowUpConsultationService externalFollowUpConsultationService
-    ) {
+    public ConsultationCommandServiceImpl(ConsultationRepository consultationRepository, CommunicationKafkaProducer communicationKafkaProducer, FollowUpKafkaProducer followUpKafkaProducer) {
         this.consultationRepository = consultationRepository;
-        //this.externalPaymentConsultationServices = externalPaymentConsultationServices1;
-        //this.externalProfileConsultationService = externalProfileConsultationService1;
-        //this.externalCommunicationConsultationService = externalCommunicationConsultationService;
-        //this.externalLegalCaseConsultationService = externalLegalCaseConsultationService;
-        //this.externalFollowUpConsultationService = externalFollowUpConsultationService;
+        this.communicationKafkaProducer = communicationKafkaProducer;
+        this.followUpKafkaProducer = followUpKafkaProducer;
     }
 
     @Override
@@ -44,9 +33,14 @@ public class ConsultationCommandServiceImpl implements ConsultationCommandServic
             throw new IllegalArgumentException("Error saving consultation: " + e.getMessage());
         }
 
-        /*externalCommunicationConsultationService.createChatRoom(consultation.getId());
+        communicationKafkaProducer.createChatRoom(consultation.getId());
 
-        externalLegalCaseConsultationService.createLegalCase(command.title(),command.description(), consultation.getId());*/
+        followUpKafkaProducer.createNotification(
+                "Consulta Creada",
+                "Se ha creado una nueva consulta con descripción: " + consultation.getDescription(),
+                consultation.getClientId(),
+                consultation.getId()
+        );
 
         return consultation.getId();
     }

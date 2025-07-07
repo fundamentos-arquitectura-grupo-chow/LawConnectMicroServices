@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.lorem.communicationservice.domain.model.valueobjects.CommunicationStatus;
 import org.lorem.communicationservice.domain.model.valueobjects.Messages;
 import org.lorem.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
-import upc.LoremIpsum.lawconnectplatform.consultation.domain.model.aggregates.Consultation;
 
 @Entity
 @Getter
@@ -15,7 +14,7 @@ public class ChatRoom extends AuditableAbstractAggregateRoot<ChatRoom> {
     private Long consultationId;
 
     @Embedded
-    private Messages messages;
+    private final Messages messages;
 
     public ChatRoom() {
         this.messages = new Messages();
@@ -25,9 +24,9 @@ public class ChatRoom extends AuditableAbstractAggregateRoot<ChatRoom> {
     @Column(nullable = false)
     private CommunicationStatus status;
 
-    public ChatRoom(Consultation consultation) {
+    public ChatRoom(Long consultationId) {
         this();
-        this.consultation = consultation;
+        this.consultationId = consultationId;
         this.status = CommunicationStatus.PENDING;
     }
 

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package consultation;
+
+service ConsultationService {
+  rpc GetClientIdByConsultationId (ConsultationIdRequest) returns (GetClientIdResponse);
+  rpc ExistConsultationById (ConsultationIdRequest) returns (ExistConsultationResponse);
+}
+
+message ConsultationIdRequest {
+  int64 consultationId = 1;
+}
+
+message GetClientIdResponse {
+  int64 clientId = 1;
+}
+
+message ExistConsultationResponse {
+  bool exists = 1;
+}
