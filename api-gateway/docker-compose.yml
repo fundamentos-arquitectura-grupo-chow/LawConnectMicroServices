@@ -49,9 +49,7 @@ services:
       - lawconnect-network
 
   communication-service:
-    build:
-      context: ../communication-service
-      dockerfile: Dockerfile
+    image: chermill/funda-communication-service:latest
     container_name: communication-service-container
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://communication-service-db:5432/communication_database
@@ -92,9 +90,7 @@ services:
       - lawconnect-network
 
   consultation-service:
-    build:
-      context: ../consultation-service
-      dockerfile: Dockerfile
+    image: chermill/funda-consultation-service:latest
     container_name: consultation-service-container
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://consultation-service-db:5432/consultation_database
@@ -135,9 +131,7 @@ services:
       - lawconnect-network
 
   feeing-service:
-    build:
-      context: ../feeing-service
-      dockerfile: Dockerfile
+    image: chermill/funda-feeing-service:latest
     container_name: feeing-service-container
     environment:
       AUTHORIZATION_JWT_SECRET: clave_secreta_para_firmar_jwt_tokens
@@ -180,9 +174,7 @@ services:
       - lawconnect-network
 
   follow-up-service:
-    build:
-      context: ../follow-up-service
-      dockerfile: Dockerfile
+    image: chermill/funda-follow-up-service:latest
     container_name: follow-up-service-container
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://follow-up-service-db:5432/follow_up_database
@@ -223,9 +215,7 @@ services:
       - lawconnect-network
 
   iam-service:
-    build:
-      context: ../iam-service
-      dockerfile: Dockerfile
+    image: chermill/funda-iam-service:latest
     container_name: iam-service-container
     environment:
       AUTHORIZATION_JWT_SECRET: clave_secreta_para_firmar_jwt_tokens
@@ -268,9 +258,7 @@ services:
       - lawconnect-network
 
   legal-case-service:
-    build:
-      context: ../legal-case-service
-      dockerfile: Dockerfile
+    image: chermill/funda-legal-case-service:latest
     container_name: legal-case-service-container
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://legal-case-service-db:5432/legal_case_database
@@ -311,9 +299,7 @@ services:
       - lawconnect-network
 
   profiles-service:
-    build:
-      context: ../profiles-service
-      dockerfile: Dockerfile
+    image: chermill/funda-profile-service:latest
     container_name: profiles-service-container
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://profiles-service-db:5432/profiles_database
@@ -337,9 +323,7 @@ services:
     restart: on-failure
 
   api-gateway:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: chermill/funda-apigateway:latest
     container_name: api-gateway-container
     ports:
       - "8000:8000"
@@ -363,9 +347,7 @@ services:
         condition: service_started
 
   frontend:
-    build:
-      context: ../LawConnectFrontEnd
-      dockerfile: Dockerfile
+    image: chermill/funda-frontend:latest
     container_name: frontend-container
     ports:
       - "4200:80"
