@@ -1,10 +1,7 @@
 package org.lorem.consultationservice.interfaces.acl;
 
 import org.springframework.stereotype.Service;
-import org.lorem.consultationservice.domain.model.aggregates.Consultation;
-import org.lorem.consultationservice.domain.model.commands.CompletePaymentByIdCommand;
 import org.lorem.consultationservice.domain.model.queries.GetConsultationByIdQuery;
-import org.lorem.consultationservice.domain.services.ConsultationCommandService;
 import org.lorem.consultationservice.domain.services.ConsultationQueryService;
 
 
@@ -16,7 +13,6 @@ public class ConsultationContextFacade {
     public ConsultationContextFacade(ConsultationQueryService consultationQueryService) {
         this.consultationQueryService = consultationQueryService;
     }
-
 
     public Long getClientIdById(Long consultationId) {
         var consultation = consultationQueryService.handle(new GetConsultationByIdQuery(consultationId));

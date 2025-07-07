@@ -21,7 +21,7 @@ public class PaymentQueryServiceImpl implements PaymentQueryService {
 
     @Override
     public List<Payment> handle(GetAllPaymentsByConsultationIdQuery query) {
-        return paymentRepository.findAllByConsultation(query.consultationId());
+        return paymentRepository.findAllByConsultationId(query.consultationId());
     }
 
     @Override

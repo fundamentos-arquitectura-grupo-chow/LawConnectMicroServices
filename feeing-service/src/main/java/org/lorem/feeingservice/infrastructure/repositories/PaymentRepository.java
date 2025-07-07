@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findAllByClientId(Long clientId);
-    List<Payment> findAllByConsultation(Long consultationId);
+    List<Payment> findAllByConsultationId(Long consultationId);
 }
